@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,18 +6,18 @@
 // Apply saved theme immediately to avoid a flash of the wrong theme before the main app script runs.
 (function(){
   try{
-    var saved = localStorage.getItem('novelforge-theme');
+    var saved = localStorage.getItem('emaki-theme');
     if(saved === 'light') document.documentElement.classList.add('light');
   }catch(e){}
 })();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280, initial-scale=1.0">
-<meta name="description" content="Novel Flow AI Creator Edition — Graphic Novel Studio">
-<meta property="og:title" content="Novel Flow AI Creator Edition">
-<meta property="og:description" content="Novel Flow AI Creator Edition — Graphic Novel Studio">
+<meta name="description" content="Emaki AI Creator — Graphic Novel Studio">
+<meta property="og:title" content="Emaki AI Creator">
+<meta property="og:description" content="Emaki AI Creator — Graphic Novel Studio">
 <meta property="og:type" content="website">
-<title>Novel Flow AI Creator Edition</title>
+<title>Emaki AI Creator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=Comic+Neue:wght@400;700&family=Bangers&family=Permanent+Marker&family=Caveat:wght@400;700&family=Architects+Daughter&display=swap" rel="stylesheet">
@@ -2082,7 +2083,7 @@ select.input-field{ appearance:none; }
         <circle cx="58" cy="8" r="1.5" fill="#14b8c4" opacity="0.6"/>
         <circle cx="46" cy="6" r="1" fill="#14b8c4" opacity="0.4"/>
       </svg>
-      <div style="font-size:26px;font-weight:800;color:#14b8c4;letter-spacing:-0.5px;">Novel Flow AI <span style="font-size:14px;font-weight:700;color:var(--accent-light);border:1px solid var(--border-accent);border-radius:5px;padding:1px 6px;vertical-align:middle;margin-left:2px;">Creator</span></div>
+      <div style="font-size:26px;font-weight:800;color:#14b8c4;letter-spacing:-0.5px;">Emaki AI <span style="font-size:14px;font-weight:700;color:var(--accent-light);border:1px solid var(--border-accent);border-radius:5px;padding:1px 6px;vertical-align:middle;margin-left:2px;">Creator</span></div>
       <div style="font-size:13px;color:var(--color-text-muted,#7fa2ad);">Creator Edition · Graphic Novel Studio</div>
     </div>
 
@@ -2123,7 +2124,7 @@ select.input-field{ appearance:none; }
   </div>
 
   <div class="lock-footer">
-    Purchased Novel Flow AI Creator Edition on Warrior+? Check your delivery page for the access code.
+    Purchased Emaki AI Creator on Warrior+? Check your delivery page for the access code.
   </div>
 </div>
 
@@ -2142,7 +2143,7 @@ select.input-field{ appearance:none; }
       <path d="M28 8C28 6.89543 27.1046 6 26 6H18V26H26C27.1046 26 28 25.1046 28 24V8Z" fill="var(--accent-light)"/>
       <path d="M16 2L17.8 6.2L22 8L17.8 9.8L16 14L14.2 9.8L10 8L14.2 6.2L16 2Z" fill="#67e8f9"/>
     </svg>
-    <span class="app-name">Novel Flow <span>AI Creator</span></span>
+    <span class="app-name">Emaki <span>AI Creator</span></span>
   </div>
   <div class="header-right">
     <button onclick="showNewStoryOptions()" class="header-btn header-btn-primary" title="New Story">
@@ -2165,7 +2166,7 @@ select.input-field{ appearance:none; }
     <button onclick="document.getElementById('loadProjectInput').click()" class="header-btn" title="Load project">
       <i data-lucide="folder-open" class="w-4 h-4"></i>
     </button>
-    <input type="file" id="loadProjectInput" accept=".json,.novelforge.json" class="hidden" onchange="loadProjectFile(event)">
+    <input type="file" id="loadProjectInput" accept=".json,.emaki.json" class="hidden" onchange="loadProjectFile(event)">
     <button onclick="saveProject()" class="header-btn header-btn-primary">
       <i data-lucide="save" class="w-4 h-4"></i> Save
     </button>
@@ -2253,7 +2254,7 @@ select.input-field{ appearance:none; }
           <!-- Anthropic -->
           <label class="field-label">Anthropic</label>
           <div class="relative mb-1">
-            <input type="password" id="anthropicKey" class="input-field pr-9" placeholder="sk-ant-..." oninput="appState.apiKeys.anthropic=this.value; localStorage.setItem('novelforge_key_anthropic', this.value); updateApiStatusDot('anthropic','idle');">
+            <input type="password" id="anthropicKey" class="input-field pr-9" placeholder="sk-ant-..." oninput="appState.apiKeys.anthropic=this.value; localStorage.setItem('emaki_key_anthropic', this.value); updateApiStatusDot('anthropic','idle');">
             <button onclick="toggleKeyVisibility('anthropic')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
               <i data-lucide="eye" class="w-4 h-4" id="anthropicEyeIcon"></i>
             </button>
@@ -2266,7 +2267,7 @@ select.input-field{ appearance:none; }
           <!-- OpenAI -->
           <label class="field-label">OpenAI</label>
           <div class="relative mb-1">
-            <input type="password" id="openaiKey" class="input-field pr-9" placeholder="sk-..." oninput="appState.apiKeys.openai=this.value; localStorage.setItem('novelforge_key_openai', this.value); updateApiStatusDot('openai','idle');">
+            <input type="password" id="openaiKey" class="input-field pr-9" placeholder="sk-..." oninput="appState.apiKeys.openai=this.value; localStorage.setItem('emaki_key_openai', this.value); updateApiStatusDot('openai','idle');">
             <button onclick="toggleKeyVisibility('openai')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
               <i data-lucide="eye" class="w-4 h-4" id="openaiEyeIcon"></i>
             </button>
@@ -2279,7 +2280,7 @@ select.input-field{ appearance:none; }
           <!-- Gemini -->
           <label class="field-label">Gemini</label>
           <div class="relative mb-1">
-            <input type="password" id="geminiKey" class="input-field pr-9" placeholder="AIza..." oninput="appState.apiKeys.gemini=this.value; localStorage.setItem('novelforge_key_gemini', this.value); updateApiStatusDot('gemini','idle');">
+            <input type="password" id="geminiKey" class="input-field pr-9" placeholder="AIza..." oninput="appState.apiKeys.gemini=this.value; localStorage.setItem('emaki_key_gemini', this.value); updateApiStatusDot('gemini','idle');">
             <button onclick="toggleKeyVisibility('gemini')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
               <i data-lucide="eye" class="w-4 h-4" id="geminiEyeIcon"></i>
             </button>
@@ -2330,7 +2331,7 @@ select.input-field{ appearance:none; }
             </optgroup>
             <optgroup label="Google">
               <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro</option>
-              <option value="gemini-3.1-flash">Gemini 3.1 Flash</option>
+              <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
             </optgroup>
           </select>
 
@@ -2635,8 +2636,8 @@ select.input-field{ appearance:none; }
 <script>
 // ====== NOVELFORGE ACCESS LOCK ======
 const VALID_HASH = '3fe2281e4c2c0b3394ec6ca615c654ef07c36c81fa3173d1aca9cc1a7c5f55ba';
-const LOCK_STORAGE_KEY = 'novelforge_creator_unlocked';
-const LOCK_STORAGE_KEY_LEGACY_FE = 'novelforge_fe_unlocked';
+const LOCK_STORAGE_KEY = 'emaki_creator_unlocked';
+const LOCK_STORAGE_KEY_LEGACY_FE = 'emaki_fe_unlocked';
 const CREATOR_MODE = true;
 
 // One-time migration: an earlier build stored the unlock flag under the old FE key.
@@ -2837,7 +2838,7 @@ function creatorResolveVersionForFeature(label){
   return 'v3'; // sensible default for anything unmapped
 }
 
-const CREATOR_UNLOCK_HINT_KEY = 'novelforge_creator_unlock_hint';
+const CREATOR_UNLOCK_HINT_KEY = 'emaki_creator_unlock_hint';
 const CREATOR_UNLOCK_HINT_WINDOW_MS = 90 * 1000; // clicks inside this window count as one "streak"
 
 function creatorLoadUnlockHintState(){
@@ -2874,8 +2875,8 @@ function creatorApplyUnlockHintUI(state){
   void btn.offsetWidth;
   btn.classList.add('rail-pulse');
   renderUnlocksPanel();
-  if(state.count >= 3 && _activePanel !== 'unlocks' && !sessionStorage.getItem('novelforge_creator_unlocks_autoopened')){
-    sessionStorage.setItem('novelforge_creator_unlocks_autoopened', '1');
+  if(state.count >= 3 && _activePanel !== 'unlocks' && !sessionStorage.getItem('emaki_creator_unlocks_autoopened')){
+    sessionStorage.setItem('emaki_creator_unlocks_autoopened', '1');
     setTimeout(() => { if(_activePanel !== 'unlocks') toggleSidePanel('unlocks'); }, 450);
   }
 }
@@ -3720,13 +3721,13 @@ const TEXT_MODELS = [
   { id:'gpt-5.5',                  provider:'openai',    label:'GPT-5.5 (OpenAI)' },
   { id:'gpt-5.4',                  provider:'openai',    label:'GPT-5.4 (OpenAI)' },
   { id:'gemini-3.1-pro-preview',   provider:'gemini',    label:'Gemini 3.1 Pro (Google)' },
-  { id:'gemini-3.1-flash',         provider:'gemini',    label:'Gemini 3.1 Flash (Google)' }
+  { id:'gemini-3.6-flash',         provider:'gemini',    label:'Gemini 3.6 Flash (Google)' }
 ];
 
 const IMAGE_TOOLS = [
   { id:'gpt-image-2',    provider:'openai', model:'gpt-image-2',               emoji:'🎨', label:'ChatGPT Image 2',  desc:'OpenAI · GPT Image 2' },
   { id:'nanobanana-pro', provider:'gemini', model:'gemini-3-pro-image-preview',  emoji:'🍌', label:'Nano Banana Pro',  desc:'Gemini · 3 Pro Image' },
-  { id:'nanobanana-2',   provider:'gemini', model:'gemini-3.1-flash-image-preview', emoji:'🍌', label:'Nano Banana 2', desc:'Gemini · 3.1 Flash Image' }
+  { id:'nanobanana-2',   provider:'gemini', model:'gemini-3.1-flash-image', emoji:'🍌', label:'Nano Banana 2', desc:'Gemini · 3.1 Flash Image' }
 ];
 
 function getTextModelInfo(){
@@ -3767,7 +3768,7 @@ function requireImageApiKey(){
 /* ====================== UTILS ====================== */
 /* ====================== STORY PERSISTENCE ====================== */
 function getStoriesIndex(){
-  try { return JSON.parse(localStorage.getItem('novelforge_stories') || '[]'); } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('emaki_stories') || '[]'); } catch { return []; }
 }
 
 function autoSaveStory(){
@@ -3784,14 +3785,14 @@ function autoSaveStory(){
     data.backCoverImageData = null;
     data.volumes?.forEach(v=>{ v.coverImageData=null; v.backCoverImageData=null; });
     if(Array.isArray(data.scenes)) data.scenes.forEach(s=>{ s.imageData = null; });
-    localStorage.setItem('novelforge_story_' + appState.storyId, JSON.stringify(data));
+    localStorage.setItem('emaki_story_' + appState.storyId, JSON.stringify(data));
     const index = getStoriesIndex();
     const existing = index.find(s => s.id === appState.storyId);
     const info = { id: appState.storyId, title: appState.title, updatedAt: Date.now(), sceneCount: appState.scenes.length };
     if(existing) Object.assign(existing, info);
     else index.push(info);
-    localStorage.setItem('novelforge_stories', JSON.stringify(index));
-    localStorage.setItem('novelforge_current_story', appState.storyId);
+    localStorage.setItem('emaki_stories', JSON.stringify(index));
+    localStorage.setItem('emaki_current_story', appState.storyId);
     const dbPayload = { scenes: appState.scenes.map((s,i)=>({imageData: imagesToSave[i]})) };
     if(coverData) dbPayload.coverImageData = coverData;
     if(backCoverData) dbPayload.backCoverImageData = backCoverData;
@@ -3807,8 +3808,8 @@ function autoSaveStory(){
 
 /* ====================== TIMED AUTO-SAVE BACKUP (every N min) ====================== */
 let _autoSaveTimer = null;
-const AUTO_SAVE_KEY = 'novelforge_autosave';
-const AUTO_SAVE_META_KEY = 'novelforge_autosave_meta';
+const AUTO_SAVE_KEY = 'emaki_autosave';
+const AUTO_SAVE_META_KEY = 'emaki_autosave_meta';
 
 function startAutoSave() {
   stopAutoSave();
@@ -3966,10 +3967,10 @@ function renderAutoSaveRestore() {
 }
 
 async function restoreCurrentStory(){
-  const currentId = localStorage.getItem('novelforge_current_story');
+  const currentId = localStorage.getItem('emaki_current_story');
   if(!currentId) return;
   try {
-    const saved = JSON.parse(localStorage.getItem('novelforge_story_' + currentId) || 'null');
+    const saved = JSON.parse(localStorage.getItem('emaki_story_' + currentId) || 'null');
     if(!saved) return;
     creatorSanitizeProjectPayload(saved);
     const keptKeys = appState.apiKeys;
@@ -4095,7 +4096,7 @@ function createNewStory(){
   appState.settings = keptSettings;
   appState.bubbleSettings = keptBubbleSettings;
   normalizeSelectedTextModel(); // kept settings could carry a stale/invalid model id
-  localStorage.setItem('novelforge_current_story', appState.storyId);
+  localStorage.setItem('emaki_current_story', appState.storyId);
   if(oldStoryId) clearStoryImages(oldStoryId);
   autoSaveStory();
   closeStoriesModal();
@@ -4111,7 +4112,7 @@ function createNewStory(){
 async function switchToStory(id){
   autoSaveStory();
   let saved;
-  try { saved = JSON.parse(localStorage.getItem('novelforge_story_' + id) || 'null'); } catch {}
+  try { saved = JSON.parse(localStorage.getItem('emaki_story_' + id) || 'null'); } catch {}
   if(!saved){ showToast('Story not found.', 'error'); return; }
   const keptKeys = appState.apiKeys;
   Object.assign(appState, saved);
@@ -4160,7 +4161,7 @@ async function switchToStory(id){
   updateSummary();
   updateStepBar();
   renderSetupTab();
-  localStorage.setItem('novelforge_current_story', id);
+  localStorage.setItem('emaki_current_story', id);
   closeStoriesModal();
   lucide.createIcons();
   showToast('Loaded: ' + appState.title, 'success');
@@ -4171,8 +4172,8 @@ function deleteStory(id){
   const entry = index.find(s => s.id === id);
   if(!confirm('Delete "' + (entry ? entry.title : 'this story') + '"? This cannot be undone.')) return;
   const newIndex = index.filter(s => s.id !== id);
-  localStorage.setItem('novelforge_stories', JSON.stringify(newIndex));
-  localStorage.removeItem('novelforge_story_' + id);
+  localStorage.setItem('emaki_stories', JSON.stringify(newIndex));
+  localStorage.removeItem('emaki_story_' + id);
   if(appState.storyId === id){
     if(newIndex.length) switchToStory(newIndex[newIndex.length - 1].id);
     else createNewStory();
@@ -5015,7 +5016,7 @@ function applyStoryTemplate(previewId, mode){
     }
     appState.pageCount = CREATOR_MODE ? creatorSanitizePageCount(t.scenes.length) : Math.max(t.scenes.length, 5);
     creatorClampCreativeState();
-    localStorage.setItem('novelforge_current_story', appState.storyId);
+    localStorage.setItem('emaki_current_story', appState.storyId);
     hydrateFormFromState();
     switchTab('setup');
     renderSetupTab();
@@ -5098,7 +5099,7 @@ function applyStoryTemplate(previewId, mode){
     }
     appState.pageCount = CREATOR_MODE ? creatorSanitizePageCount(t.scenes.length) : Math.max(t.scenes.length, 5);
     creatorClampCreativeState();
-    localStorage.setItem('novelforge_current_story', appState.storyId);
+    localStorage.setItem('emaki_current_story', appState.storyId);
     hydrateFormFromState();
     switchTab('setup');
     renderSetupTab();
@@ -5124,7 +5125,7 @@ function exportTemplateLibrary(){
   const blob = new Blob([JSON.stringify({ templates: lib, meta: appState.templateLibraryMeta, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `novelflow-templates-${Date.now()}.json`;
+  a.href = url; a.download = `emaki-templates-${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('Template library exported.','success');
@@ -5157,7 +5158,7 @@ function showCharacterPackGeneratePanel(){
 
 function loadCharacterPackLibrary(){
   try {
-    const saved = localStorage.getItem('novelforge_character_packs');
+    const saved = localStorage.getItem('emaki_character_packs');
     if(saved){
       const parsed = JSON.parse(saved);
       if(Array.isArray(parsed.packs)) appState.characterPacks = parsed.packs;
@@ -5168,7 +5169,7 @@ function loadCharacterPackLibrary(){
 
 function saveCharacterPackLibrary(){
   try {
-    localStorage.setItem('novelforge_character_packs', JSON.stringify({
+    localStorage.setItem('emaki_character_packs', JSON.stringify({
       packs: appState.characterPacks,
       meta: appState.characterPackMeta
     }));
@@ -5484,7 +5485,7 @@ function exportCharacterPackLibrary(){
   const blob = new Blob([JSON.stringify({ packs: appState.characterPacks, meta: appState.characterPackMeta, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `novelflow-characters-${Date.now()}.json`;
+  a.href = url; a.download = `emaki-characters-${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('Character pack library exported.','success');
@@ -5536,12 +5537,12 @@ function hideLoading(){
 function toggleTheme(){
   document.documentElement.classList.toggle('light');
   const isLight = document.documentElement.classList.contains('light');
-  try{ localStorage.setItem('novelforge-theme', isLight ? 'light' : 'dark'); }catch(e){}
+  try{ localStorage.setItem('emaki-theme', isLight ? 'light' : 'dark'); }catch(e){}
 }
 
 function restoreTheme(){
   let saved = null;
-  try{ saved = localStorage.getItem('novelforge-theme'); }catch(e){}
+  try{ saved = localStorage.getItem('emaki-theme'); }catch(e){}
   if(saved === 'light'){
     document.documentElement.classList.add('light');
   } else {
@@ -5631,7 +5632,7 @@ function goToStepIfComplete(step){
 /* ====================== INDEXEDDB IMAGE PERSISTENCE ====================== */
 function openImageDB(){
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open('NovelForgeImages', 1);
+    const req = indexedDB.open('EmakiImages', 1);
     req.onupgradeneeded = e => {
       const db = e.target.result;
       if(!db.objectStoreNames.contains('images')){
@@ -5736,21 +5737,21 @@ async function clearStoryImages(storyId){
 /* ====================== API KEY MGMT ====================== */
 function loadSavedKeys(){
   ['anthropic','openai','gemini'].forEach(provider=>{
-    const saved = localStorage.getItem(`novelforge_key_${provider}`);
+    const saved = localStorage.getItem(`emaki_key_${provider}`);
     if(saved){
       appState.apiKeys[provider] = saved;
       const input = document.getElementById(`${provider}Key`);
       if(input) input.value = saved;
     }
-    const status = localStorage.getItem(`novelforge_status_${provider}`);
+    const status = localStorage.getItem(`emaki_status_${provider}`);
     if(status) updateApiStatusDot(provider, status);
   });
 }
 
 function clearSavedKeys(){
   ['anthropic','openai','gemini'].forEach(provider=>{
-    localStorage.removeItem(`novelforge_key_${provider}`);
-    localStorage.removeItem(`novelforge_status_${provider}`);
+    localStorage.removeItem(`emaki_key_${provider}`);
+    localStorage.removeItem(`emaki_status_${provider}`);
     appState.apiKeys[provider] = '';
     const input = document.getElementById(`${provider}Key`);
     if(input) input.value = '';
@@ -5774,7 +5775,7 @@ function updateApiStatusDot(provider, state){
   if(state==='ok'){ dot.classList.add('ok'); label.textContent='Connected'; }
   else if(state==='fail'){ dot.classList.add('fail'); label.textContent='Invalid key'; }
   else { label.textContent='Not tested'; }
-  try { localStorage.setItem(`novelforge_status_${provider}`, state); } catch(e){}
+  try { localStorage.setItem(`emaki_status_${provider}`, state); } catch(e){}
 }
 
 async function testConnection(provider){
@@ -5846,7 +5847,7 @@ function saveProject(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${slugify(appState.title)}.novelforge.json`;
+  a.download = `${slugify(appState.title)}.emaki.json`;
   a.click();
   URL.revokeObjectURL(url);
   performAutoSave();
@@ -5926,7 +5927,7 @@ function hydrateFormFromState(){
 }
 
 /* ====================== TEMPLATE & DFY PACK ENGINE ====================== */
-const TEMPLATE_LIBRARY_KEY = 'novelforge_templates';
+const TEMPLATE_LIBRARY_KEY = 'emaki_templates';
 function generateTemplateId(){ return 'tpl-'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
 function generatePackId(){ return 'pack-'+Math.random().toString(36).slice(2,10); }
 
@@ -5938,7 +5939,7 @@ function saveTemplateLibrary(list){
   try{ localStorage.setItem(TEMPLATE_LIBRARY_KEY, JSON.stringify(list)); }
   catch(e){ showToast('Failed to save template library.','error'); }
 }
-const LEGACY_TEMPLATE_KEY = 'novelforge_template_library';
+const LEGACY_TEMPLATE_KEY = 'emaki_template_library';
 function migrateLegacyTemplates(){
   try {
     const saved = localStorage.getItem(LEGACY_TEMPLATE_KEY);
@@ -7163,7 +7164,7 @@ const TONES = ['Action','Drama','Comedy','Horror','Romance','Mystery','Mixed','S
 const LANGUAGES = ['English','Italian','Spanish','French','German','Portuguese','Japanese','Custom'];
 const AUDIENCES = ['All Ages','Teen','Mature'];
 
-const NOVELFLOW_ARTSTYLES = [
+const EMAKI_ARTSTYLES = [
   {
     id: 'epicmythology',
     label: 'Epic Mythology',
@@ -7509,7 +7510,7 @@ function renderWelcomeHero(){
   return `
   <div class="welcome-hero glass-panel p-6 mb-4 text-center">
     <div class="text-5xl mb-3">📖✨</div>
-    <h2 class="text-xl font-bold mb-2">Welcome to Novel Flow AI</h2>
+    <h2 class="text-xl font-bold mb-2">Welcome to Emaki AI</h2>
     <p class="text-sm text-secondary max-w-xl mx-auto mb-4">Build your graphic novel in 4 simple steps. Start by setting up your story below — genre, characters, world, and conflict.</p>
     <button id="surpriseMeEverythingBtn" onclick="surpriseMeFillEverything()" class="btn-primary rounded-lg px-5 py-3 text-sm font-bold inline-flex items-center justify-center gap-2">
       <i data-lucide="sparkles" class="w-4 h-4"></i> Surprise Me — Fill Everything
@@ -7521,7 +7522,7 @@ function renderWelcomeHero(){
 function renderNFArtStyleGrid() {
   const el = document.getElementById('nfArtStyleGrid');
   if (!el) return;
-  el.innerHTML = NOVELFLOW_ARTSTYLES.map(as => {
+  el.innerHTML = EMAKI_ARTSTYLES.map(as => {
     const active = appState.novelArtStyle === as.id || (!appState.novelArtStyle && as.id === 'none');
     const locked = CREATOR_MODE && as.id !== 'none';
     return `<div class="nf-artstyle-item ${active?'active':''} ${locked?'creator-locked':''}" onclick="${locked?`creatorGate('Enhanced Art Styles')`:`selectNFArtStyle('${as.id}')`}">
@@ -9218,7 +9219,7 @@ function deriveChapterMetadata(upcomingScenes, chapterNumber){
 
 function buildChapterSplashPrompt(cbScene){
   const stylelock = buildStyleLock();
-  const nfStyle = NOVELFLOW_ARTSTYLES.find(s => s.id === appState.novelArtStyle);
+  const nfStyle = EMAKI_ARTSTYLES.find(s => s.id === appState.novelArtStyle);
   const nfStylePrompt = nfStyle && nfStyle.id !== 'cinematic'
     ? (nfStyle.id === 'custom' ? appState.novelArtStyleData : nfStyle.prompt) : '';
   const wl = WORLDLENSES.find(w => w.id === appState.worldLens);
@@ -9702,7 +9703,7 @@ function detectPaidPromisesInChunk(chunkScenes){
 const TITAN_MODEL_STRENGTH_ORDER = {
   anthropic: ['claude-opus-4-8','claude-sonnet-5','claude-sonnet-4-6','claude-haiku-4-5'],
   openai:    ['gpt-5.5','gpt-5.4'],
-  gemini:    ['gemini-3.1-pro-preview','gemini-3.1-flash']
+  gemini:    ['gemini-3.1-pro-preview','gemini-3.6-flash']
 };
 function getTitanPreferredModel(){
   const current = getTextModelInfo();
@@ -10289,13 +10290,13 @@ function persistTitanProgress(){
     pageCount: appState.pageCount
   };
   try {
-    localStorage.setItem('novelforge_titan_' + appState.storyId, JSON.stringify(data));
+    localStorage.setItem('emaki_titan_' + appState.storyId, JSON.stringify(data));
   } catch(e){}
 }
 
 function loadTitanProgress(){
   try {
-    const raw = localStorage.getItem('novelforge_titan_' + appState.storyId);
+    const raw = localStorage.getItem('emaki_titan_' + appState.storyId);
     if(!raw) return null;
     return JSON.parse(raw);
   } catch{ return null; }
@@ -10708,7 +10709,7 @@ function clearTitanProgress(){
   appState.titan.volumePlan = [];
   appState.titan.storyBible = createDefaultTitanStoryBible();
   appState.titan.preferredModel = '';
-  try { localStorage.removeItem('novelforge_titan_' + appState.storyId); } catch(e) {}
+  try { localStorage.removeItem('emaki_titan_' + appState.storyId); } catch(e) {}
   appState.titan.generationMode = appState.titan.enabled ? 'titan' : 'normal';
   markModified();
 }
@@ -11901,7 +11902,7 @@ function renderSceneList(){
       </div>
       <div class="scene-mod-badges">
         ${appState.novelArtStyle && appState.novelArtStyle !== 'cinematic' ? (()=>{
-          const as = NOVELFLOW_ARTSTYLES.find(s=>s.id===appState.novelArtStyle);
+          const as = EMAKI_ARTSTYLES.find(s=>s.id===appState.novelArtStyle);
           return as ? `<span class="scene-mod-badge artstyle" title="Art Style: ${as.label}"><i data-lucide="${as.icon}" class="w-2.5 h-2.5 inline-block" style="display:inline-block;vertical-align:middle;margin-right:2px"></i> ${as.label}</span>` : '';
         })() : ''}
         ${appState.worldLens && appState.worldLens !== 'none' ? (()=>{
@@ -13541,7 +13542,7 @@ function buildFinalImagePrompt(scene, idx) {
     return buildChapterSplashPrompt(scene);
   }
   const stylelock = buildStyleLock();
-  const nfStyle = NOVELFLOW_ARTSTYLES.find(s => s.id === appState.novelArtStyle);
+  const nfStyle = EMAKI_ARTSTYLES.find(s => s.id === appState.novelArtStyle);
   const nfStylePrompt = nfStyle && nfStyle.id !== 'cinematic'
     ? (nfStyle.id === 'custom' ? appState.novelArtStyleData : nfStyle.prompt)
     : '';
@@ -16377,7 +16378,7 @@ function getEffectiveEpubTitle(scopeData){
 
 function getEffectiveEpubAuthor(scopeData){
   const es = appState.exportSettings;
-  return es.epubAuthor?.trim() || scopeData?.author || 'Novel Flow AI User';
+  return es.epubAuthor?.trim() || scopeData?.author || 'Emaki AI User';
 }
 
 function getEffectiveEpubIdentifier(scopeData){
@@ -16559,7 +16560,7 @@ function renderExportTab(){
         <div class="export-section-head" style="margin-top:10px;">E · EPUB Options</div>
         <div class="export-opt-row">
           <span class="export-opt-label">Author</span>
-          <input type="text" value="${escapeAttr(es.epubAuthor||'')}" onchange="setExportSetting('epubAuthor',this.value)" style="background:transparent;border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;color:inherit;width:140px;" placeholder="Novel Flow AI User">
+          <input type="text" value="${escapeAttr(es.epubAuthor||'')}" onchange="setExportSetting('epubAuthor',this.value)" style="background:transparent;border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:11px;color:inherit;width:140px;" placeholder="Emaki AI User">
         </div>
         <div class="export-opt-row">
           <span class="export-opt-label">Publisher</span>
@@ -17369,7 +17370,7 @@ function chapterBreakToEpubXhtml(scene, idx, opts){
 function buildEpubTitlePage(opts){
   const title = escapeXml(opts.title||'Untitled');
   const tagline = opts.tagline ? `<p class="tagline">${escapeXml(opts.tagline)}</p>` : '';
-  const author = escapeXml(opts.author||'Novel Flow AI User');
+  const author = escapeXml(opts.author||'Emaki AI User');
   const genre = appState.genre ? escapeXml(appState.genre) : '';
   const tone = appState.tone ? escapeXml(appState.tone) : '';
   const dir = (opts.direction==='rtl')?' dir="rtl"':'';
@@ -17623,7 +17624,7 @@ async function _exportSingleEpubVolume(job){
   const opts = {
     title: title || appState.title || 'Untitled',
     tagline: appState.tagline || '',
-    author: es.epubAuthor?.trim() || 'Novel Flow AI User',
+    author: es.epubAuthor?.trim() || 'Emaki AI User',
     publisher: es.epubPublisher || '',
     language: es.epubLanguage || appState.language || 'en',
     identifier: es.epubIdentifier?.trim() || 'urn:uuid:' + (appState.storyId || Date.now().toString(36) + Math.random().toString(36).slice(2,10)),
@@ -17888,7 +17889,7 @@ async function _exportSingleEpubVolume(job){
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"${opts.direction==='rtl'?' dir="rtl"':''}>
 <head><title>Footer</title><link rel="stylesheet" type="text/css" href="styles/book.css"/></head>
-<body><div class="footer-note"><p>Generated with Novel Flow AI</p></div></body></html>`;
+<body><div class="footer-note"><p>Generated with Emaki AI</p></div></body></html>`;
       } else {
         continue;
       }
