@@ -50,6 +50,14 @@
 
       --success: #34d399;
 
+      /* Bonus-specific colors - Master Edition */
+      --bonus-ruby: #dc2626;
+      --bonus-ruby-light: #f87171;
+      --bonus-ruby-bg: rgba(220, 38, 38, 0.08);
+      --bonus-ruby-border: rgba(220, 38, 38, 0.40);
+      --bonus-emerald: #059669;
+      --bonus-emerald-light: #34d399;
+
       --radius-md: 12px;
       --radius-lg: 18px;
       --radius-xl: 24px;
@@ -506,6 +514,221 @@
       line-height: 1.55;
     }
 
+    /* ========== BONUSES SECTION - MASTER EDITION ========== */
+
+    .bonuses {
+      position: relative;
+      overflow: hidden;
+      margin-top: 32px;
+      padding: 38px 30px 34px;
+      border: 2px solid var(--bonus-ruby-border);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(ellipse at 30% 0%, rgba(220, 38, 38, 0.16), transparent 50%),
+        radial-gradient(ellipse at 70% 100%, rgba(5, 150, 105, 0.12), transparent 50%),
+        linear-gradient(160deg, rgba(35, 12, 12, 0.94), rgba(15, 9, 9, 0.97) 60%);
+      box-shadow: 0 0 55px rgba(220, 38, 38, 0.16), var(--shadow-lg);
+    }
+
+    .bonuses::before {
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      content: "⚡";
+      font-size: 46px;
+      filter: drop-shadow(0 6px 18px rgba(220, 38, 38, 0.55));
+      animation: floatBolt 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBolt {
+      0%, 100% { transform: translateX(-50%) translateY(0px) scale(1); }
+      50% { transform: translateX(-50%) translateY(-10px) scale(1.12); }
+    }
+
+    .bonuses-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    .bonuses-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 18px;
+      border: 1px solid rgba(220, 38, 38, 0.50);
+      border-radius: 999px;
+      color: var(--bonus-ruby-light);
+      background: rgba(220, 38, 38, 0.16);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .bonuses-badge-emoji {
+      font-size: 16px;
+      animation: pulseRuby 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseRuby {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.28); }
+    }
+
+    .bonuses h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 6px;
+      color: var(--text-primary);
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(32px, 5vw, 42px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+    }
+
+    .bonuses h2 .highlight {
+      background: linear-gradient(135deg, var(--bonus-ruby-light), var(--bonus-emerald-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bonuses-subtitle {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 8px auto 28px;
+      color: #d4b8a8;
+      font-size: 15px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .bonuses-subtitle strong {
+      color: #fca5a5;
+    }
+
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bonus {
+      position: relative;
+      min-width: 0;
+      padding: 26px 22px 24px;
+      border: 1px solid rgba(220, 38, 38, 0.20);
+      border-radius: 18px;
+      background: rgba(25, 10, 10, 0.58);
+      backdrop-filter: blur(6px);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .bonus:hover {
+      border-color: var(--bonus-ruby-border);
+      background: rgba(35, 12, 12, 0.74);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(220, 38, 38, 0.22);
+    }
+
+    .bonus-emoji {
+      font-size: 42px;
+      margin-bottom: 10px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(220, 38, 38, 0.38));
+    }
+
+    .bonus-number {
+      display: inline-grid;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+      place-items: center;
+      border: 1px solid rgba(220, 38, 38, 0.42);
+      border-radius: 8px;
+      color: #fca5a5;
+      background: rgba(220, 38, 38, 0.16);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bonus h3 {
+      margin: 0 0 10px;
+      color: #fecaca;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+
+    .bonus p {
+      margin: 0 0 20px;
+      color: #c4a098;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .bonus-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border: 1px solid rgba(220, 38, 38, 0.54);
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.34), rgba(5, 150, 105, 0.24));
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all var(--transition);
+      box-shadow: 0 4px 16px rgba(220, 38, 38, 0.20);
+    }
+
+    .bonus-link:hover {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.52), rgba(5, 150, 105, 0.38));
+      border-color: rgba(248, 113, 113, 0.74);
+      box-shadow: 0 10px 30px rgba(220, 38, 38, 0.38);
+      gap: 10px;
+    }
+
+    .bonus-link-arrow {
+      font-size: 15px;
+      line-height: 1;
+      transition: transform var(--transition);
+    }
+
+    .bonus-link:hover .bonus-link-arrow {
+      transform: translateX(3px);
+    }
+
+    .bonuses-sparkles {
+      position: absolute;
+      pointer-events: none;
+      font-size: 20px;
+      opacity: 0.5;
+    }
+
+    .bonuses-sparkles--tl { top: 12px; left: 20px; animation: sparkleFloat 4s ease-in-out infinite; }
+    .bonuses-sparkles--tr { top: 16px; right: 24px; animation: sparkleFloat 4.5s ease-in-out 0.5s infinite; }
+    .bonuses-sparkles--bl { bottom: 14px; left: 28px; animation: sparkleFloat 3.8s ease-in-out 1s infinite; }
+    .bonuses-sparkles--br { bottom: 18px; right: 20px; animation: sparkleFloat 4.2s ease-in-out 0.3s infinite; }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.40; }
+      50% { transform: translateY(-12px) scale(1.28); opacity: 0.80; }
+    }
+
     .important {
       display: flex;
       gap: 12px;
@@ -565,8 +788,21 @@
         padding: 22px;
       }
 
-      .step-grid {
+      .bonuses {
+        padding: 32px 18px 28px;
+      }
+
+      .step-grid,
+      .bonus-grid {
         grid-template-columns: 1fr;
+      }
+
+      .bonus {
+        padding: 22px 18px 20px;
+      }
+
+      .bonuses-sparkles {
+        font-size: 16px;
       }
     }
 
@@ -701,6 +937,93 @@
       </div>
     </section>
 
+    <!-- ========== BONUSES SECTION - MASTER EDITION ========== -->
+    <section class="bonuses">
+      <!-- Sparkles decorative -->
+      <span class="bonuses-sparkles bonuses-sparkles--tl" aria-hidden="true">⚡</span>
+      <span class="bonuses-sparkles bonuses-sparkles--tr" aria-hidden="true">💎</span>
+      <span class="bonuses-sparkles bonuses-sparkles--bl" aria-hidden="true">🔥</span>
+      <span class="bonuses-sparkles bonuses-sparkles--br" aria-hidden="true">⚡</span>
+
+      <div class="bonuses-header">
+        <div class="bonuses-badge">
+          <span class="bonuses-badge-emoji">⚡</span>
+          <span>Master Exclusive Bonuses</span>
+          <span class="bonuses-badge-emoji">⚡</span>
+        </div>
+        <h2>
+          Your <span class="highlight">Master Toolkit Trilogy</span> Awaits
+        </h2>
+        <p class="bonuses-subtitle">
+          As a <strong>Master Edition</strong> creator, you've unlocked the complete trilogy 
+          of advanced storytelling systems — three powerful resources to 
+          <strong>dominate every dimension</strong> of graphic novel creation. 🔥
+        </p>
+      </div>
+
+      <div class="bonus-grid">
+        <!-- Bonus 1 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🌍</div>
+          <div class="bonus-number">01</div>
+          <h3>The World Lens & Story Layer Combination Vault — Complete Edition</h3>
+          <p>
+            Unlock the ultimate world-building system. Combine narrative lenses with deep 
+            story layers to craft immersive universes that readers can't escape. Every 
+            angle, every depth, every perspective — all at your command.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/17FrWr_2uXntsXWUMxcVP8Lqwe9GhWNkbW1NiwElEnBg/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🌍 Open Vault <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+
+        <!-- Bonus 2 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🧬</div>
+          <div class="bonus-number">02</div>
+          <h3>The Genre Fusion Formula Sheet — Complete Edition</h3>
+          <p>
+            Break every genre convention with surgical precision. This formula sheet 
+            shows you how to blend, twist, and fuse genres into entirely new categories 
+            of storytelling that feel fresh, bold, and unforgettable.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1dE-MImsvJbR0FlDNNwAakqTpGG6EPR39FOgk9pTjPW4/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🧬 Open Formula Sheet <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+
+        <!-- Bonus 3 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🎭</div>
+          <div class="bonus-number">03</div>
+          <h3>The Drama Engine Dial-In Guide — Complete Edition</h3>
+          <p>
+            Control tension, conflict, and emotional stakes like a master conductor. 
+            The Drama Engine lets you dial in exactly the right amount of pressure, 
+            release, and catharsis for every scene in your graphic novel.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/119hJ5JVxqPVZz_upd6j6D6Uy50ALLHDpA2lVCRkOlvI/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🎭 Open Guide <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
     <aside class="important">
       <div class="important-icon" aria-hidden="true">⚠</div>
 
@@ -742,6 +1065,5 @@
       }
     }
   </script>
-
 </body>
 </html>
