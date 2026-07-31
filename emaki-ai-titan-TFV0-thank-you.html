@@ -50,6 +50,13 @@
 
       --success: #34d399;
 
+      /* Bonus-specific colors - Titan Edition */
+      --bonus-ice: #38bdf8;
+      --bonus-ice-light: #7dd3fc;
+      --bonus-ice-border: rgba(56, 189, 248, 0.42);
+      --bonus-indigo: #6366f1;
+      --bonus-indigo-light: #a5b4fc;
+
       --radius-md: 12px;
       --radius-lg: 18px;
       --radius-xl: 24px;
@@ -506,6 +513,221 @@
       line-height: 1.55;
     }
 
+    /* ========== BONUSES SECTION - TITAN EDITION ========== */
+
+    .bonuses {
+      position: relative;
+      overflow: hidden;
+      margin-top: 32px;
+      padding: 38px 30px 34px;
+      border: 2px solid var(--bonus-ice-border);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(ellipse at 30% 0%, rgba(56, 189, 248, 0.16), transparent 50%),
+        radial-gradient(ellipse at 70% 100%, rgba(99, 102, 241, 0.12), transparent 50%),
+        linear-gradient(160deg, rgba(8, 16, 40, 0.95), rgba(7, 11, 22, 0.97) 60%);
+      box-shadow: 0 0 55px rgba(56, 189, 248, 0.16), var(--shadow-lg);
+    }
+
+    .bonuses::before {
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      content: "❄️";
+      font-size: 44px;
+      filter: drop-shadow(0 6px 18px rgba(56, 189, 248, 0.55));
+      animation: floatIce 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIce {
+      0%, 100% { transform: translateX(-50%) translateY(0px) rotate(-3deg); }
+      50% { transform: translateX(-50%) translateY(-10px) rotate(3deg); }
+    }
+
+    .bonuses-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    .bonuses-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 18px;
+      border: 1px solid rgba(56, 189, 248, 0.50);
+      border-radius: 999px;
+      color: var(--bonus-ice-light);
+      background: rgba(56, 189, 248, 0.16);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .bonuses-badge-emoji {
+      font-size: 16px;
+      animation: pulseIce 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseIce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.28); }
+    }
+
+    .bonuses h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 6px;
+      color: var(--text-primary);
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(32px, 5vw, 42px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+    }
+
+    .bonuses h2 .highlight {
+      background: linear-gradient(135deg, var(--bonus-ice-light), var(--bonus-indigo-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bonuses-subtitle {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 8px auto 28px;
+      color: #b8d4ee;
+      font-size: 15px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .bonuses-subtitle strong {
+      color: #bae6fd;
+    }
+
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bonus {
+      position: relative;
+      min-width: 0;
+      padding: 26px 22px 24px;
+      border: 1px solid rgba(56, 189, 248, 0.20);
+      border-radius: 18px;
+      background: rgba(10, 18, 38, 0.58);
+      backdrop-filter: blur(6px);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .bonus:hover {
+      border-color: var(--bonus-ice-border);
+      background: rgba(12, 22, 48, 0.74);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(56, 189, 248, 0.22);
+    }
+
+    .bonus-emoji {
+      font-size: 42px;
+      margin-bottom: 10px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(56, 189, 248, 0.38));
+    }
+
+    .bonus-number {
+      display: inline-grid;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+      place-items: center;
+      border: 1px solid rgba(56, 189, 248, 0.42);
+      border-radius: 8px;
+      color: #bae6fd;
+      background: rgba(56, 189, 248, 0.16);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bonus h3 {
+      margin: 0 0 10px;
+      color: #e0f2fe;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+
+    .bonus p {
+      margin: 0 0 20px;
+      color: #94b8d4;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .bonus-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border: 1px solid rgba(56, 189, 248, 0.54);
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.34), rgba(99, 102, 241, 0.24));
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all var(--transition);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.20);
+    }
+
+    .bonus-link:hover {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.52), rgba(99, 102, 241, 0.38));
+      border-color: rgba(125, 211, 252, 0.74);
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.38);
+      gap: 10px;
+    }
+
+    .bonus-link-arrow {
+      font-size: 15px;
+      line-height: 1;
+      transition: transform var(--transition);
+    }
+
+    .bonus-link:hover .bonus-link-arrow {
+      transform: translateX(3px);
+    }
+
+    .bonuses-sparkles {
+      position: absolute;
+      pointer-events: none;
+      font-size: 20px;
+      opacity: 0.5;
+    }
+
+    .bonuses-sparkles--tl { top: 12px; left: 20px; animation: sparkleFloat 4s ease-in-out infinite; }
+    .bonuses-sparkles--tr { top: 16px; right: 24px; animation: sparkleFloat 4.5s ease-in-out 0.5s infinite; }
+    .bonuses-sparkles--bl { bottom: 14px; left: 28px; animation: sparkleFloat 3.8s ease-in-out 1s infinite; }
+    .bonuses-sparkles--br { bottom: 18px; right: 20px; animation: sparkleFloat 4.2s ease-in-out 0.3s infinite; }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.40; }
+      50% { transform: translateY(-12px) scale(1.28); opacity: 0.80; }
+    }
+
     .important {
       display: flex;
       gap: 12px;
@@ -565,8 +787,21 @@
         padding: 22px;
       }
 
-      .step-grid {
+      .bonuses {
+        padding: 32px 18px 28px;
+      }
+
+      .step-grid,
+      .bonus-grid {
         grid-template-columns: 1fr;
+      }
+
+      .bonus {
+        padding: 22px 18px 20px;
+      }
+
+      .bonuses-sparkles {
+        font-size: 16px;
       }
     }
 
@@ -702,6 +937,93 @@
       </div>
     </section>
 
+    <!-- ========== BONUSES SECTION - TITAN EDITION ========== -->
+    <section class="bonuses">
+      <!-- Sparkles decorative -->
+      <span class="bonuses-sparkles bonuses-sparkles--tl" aria-hidden="true">❄️</span>
+      <span class="bonuses-sparkles bonuses-sparkles--tr" aria-hidden="true">💎</span>
+      <span class="bonuses-sparkles bonuses-sparkles--bl" aria-hidden="true">🌊</span>
+      <span class="bonuses-sparkles bonuses-sparkles--br" aria-hidden="true">❄️</span>
+
+      <div class="bonuses-header">
+        <div class="bonuses-badge">
+          <span class="bonuses-badge-emoji">❄️</span>
+          <span>Titan Exclusive Bonuses</span>
+          <span class="bonuses-badge-emoji">❄️</span>
+        </div>
+        <h2>
+          Your <span class="highlight">Frozen Vault of Titans</span> Opens
+        </h2>
+        <p class="bonuses-subtitle">
+          As a <strong>Titan Edition</strong> creator, you've unlocked three legendary 
+          resources forged for <strong>long-form storytelling mastery</strong> — from 
+          epic planning to unforgettable endings. ❄️
+        </p>
+      </div>
+
+      <div class="bonus-grid">
+        <!-- Bonus 1 -->
+        <article class="bonus">
+          <div class="bonus-emoji">📋</div>
+          <div class="bonus-number">01</div>
+          <h3>The Chunk Planning Blueprint</h3>
+          <p>
+            Master the art of breaking epic narratives into manageable, compelling chunks. 
+            This blueprint shows you how to structure volumes, acts, and chapters so your 
+            long-form story never loses momentum or reader engagement.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1eO79vMJ1O61x53tfVGiPVG4kwaP39RohDIC6G3VeAHY/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📋 Open Blueprint <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+
+        <!-- Bonus 2 -->
+        <article class="bonus">
+          <div class="bonus-emoji">📖</div>
+          <div class="bonus-number">02</div>
+          <h3>The Story Bible Setup Checklist</h3>
+          <p>
+            Build your complete story universe with confidence. This comprehensive 
+            checklist ensures every character, location, timeline, and lore element 
+            is documented, consistent, and ready for epic-scale storytelling.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1M8s5avvNAcSXnNrWQ_-JohYu6xFlm3LuJEWb3TviHds/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📖 Open Checklist <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+
+        <!-- Bonus 3 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🎯</div>
+          <div class="bonus-number">03</div>
+          <h3>The Ending That Lands: Resolution Readiness Guide</h3>
+          <p>
+            Stick every landing. This guide walks you through crafting resolutions 
+            that satisfy, surprise, and resonate — ensuring your epic journey delivers 
+            the emotional payoff your readers deserve.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1bUZ84h-mukOfZMC6Ok6G9z3JCrEMxWxdZMXpAG26GCk/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🎯 Open Guide <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
     <aside class="important">
       <div class="important-icon" aria-hidden="true">⚠</div>
 
@@ -743,6 +1065,5 @@
       }
     }
   </script>
-
 </body>
 </html>
