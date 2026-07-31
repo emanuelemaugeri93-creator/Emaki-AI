@@ -52,6 +52,14 @@
 
       --success: #34d399;
 
+      /* Bonus-specific colors - Studio Edition */
+      --bonus-amber: #f59e0b;
+      --bonus-amber-light: #fcd34d;
+      --bonus-amber-bg: rgba(245, 158, 11, 0.08);
+      --bonus-amber-border: rgba(245, 158, 11, 0.40);
+      --bonus-rose: #f43f5e;
+      --bonus-rose-light: #fb7185;
+
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 18px;
@@ -521,6 +529,223 @@
       line-height: 1.55;
     }
 
+    /* ========== BONUSES SECTION - STUDIO EDITION ========== */
+
+    .bonuses {
+      position: relative;
+      overflow: hidden;
+      margin-top: 32px;
+      padding: 38px 30px 34px;
+      border: 2px solid var(--bonus-amber-border);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(ellipse at 25% 0%, rgba(245, 158, 11, 0.14), transparent 50%),
+        radial-gradient(ellipse at 75% 100%, rgba(244, 63, 94, 0.10), transparent 50%),
+        linear-gradient(160deg, rgba(40, 25, 10, 0.92), rgba(24, 13, 34, 0.96) 60%);
+      box-shadow: 0 0 50px rgba(245, 158, 11, 0.14), var(--shadow-lg);
+    }
+
+    .bonuses::before {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      content: "👑";
+      font-size: 44px;
+      filter: drop-shadow(0 6px 16px rgba(245, 158, 11, 0.50));
+      animation: floatCrown 3.2s ease-in-out infinite;
+    }
+
+    @keyframes floatCrown {
+      0%, 100% { transform: translateX(-50%) translateY(0px) rotate(-2deg); }
+      50% { transform: translateX(-50%) translateY(-10px) rotate(2deg); }
+    }
+
+    .bonuses-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    .bonuses-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 18px;
+      border: 1px solid rgba(245, 158, 11, 0.48);
+      border-radius: 999px;
+      color: var(--bonus-amber-light);
+      background: rgba(245, 158, 11, 0.15);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .bonuses-badge-emoji {
+      font-size: 16px;
+      animation: pulseGold 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGold {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.28); }
+    }
+
+    .bonuses h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 6px;
+      color: var(--text-primary);
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(32px, 5vw, 42px);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+    }
+
+    .bonuses h2 .highlight {
+      background: linear-gradient(135deg, var(--bonus-amber-light), var(--bonus-rose-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bonuses-subtitle {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      margin: 8px auto 28px;
+      color: #d4c0a8;
+      font-size: 15px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .bonuses-subtitle strong {
+      color: #fde68a;
+    }
+
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bonus {
+      position: relative;
+      min-width: 0;
+      padding: 28px 24px 26px;
+      border: 1px solid rgba(245, 158, 11, 0.20);
+      border-radius: 18px;
+      background: rgba(30, 18, 10, 0.55);
+      backdrop-filter: blur(6px);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .bonus:hover {
+      border-color: var(--bonus-amber-border);
+      background: rgba(40, 25, 10, 0.72);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 38px rgba(245, 158, 11, 0.20);
+    }
+
+    .bonus-emoji {
+      font-size: 44px;
+      margin-bottom: 10px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.35));
+    }
+
+    .bonus-number {
+      display: inline-grid;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+      place-items: center;
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      border-radius: 8px;
+      color: #fde68a;
+      background: rgba(251, 191, 36, 0.14);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bonus h3 {
+      margin: 0 0 10px;
+      color: #fef3c7;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+
+    .bonus p {
+      margin: 0 0 20px;
+      color: #c4b08a;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .bonus-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border: 1px solid rgba(245, 158, 11, 0.52);
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.32), rgba(244, 63, 94, 0.22));
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all var(--transition);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.18);
+    }
+
+    .bonus-link:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.50), rgba(244, 63, 94, 0.35));
+      border-color: rgba(252, 211, 77, 0.72);
+      box-shadow: 0 10px 28px rgba(245, 158, 11, 0.35);
+      gap: 10px;
+    }
+
+    .bonus-link-arrow {
+      font-size: 15px;
+      line-height: 1;
+      transition: transform var(--transition);
+    }
+
+    .bonus-link:hover .bonus-link-arrow {
+      transform: translateX(3px);
+    }
+
+    .bonuses-sparkles {
+      position: absolute;
+      pointer-events: none;
+      font-size: 20px;
+      opacity: 0.5;
+    }
+
+    .bonuses-sparkles--tl { top: 12px; left: 20px; animation: sparkleFloat 4s ease-in-out infinite; }
+    .bonuses-sparkles--tr { top: 16px; right: 24px; animation: sparkleFloat 4.5s ease-in-out 0.5s infinite; }
+    .bonuses-sparkles--bl { bottom: 14px; left: 28px; animation: sparkleFloat 3.8s ease-in-out 1s infinite; }
+    .bonuses-sparkles--br { bottom: 18px; right: 20px; animation: sparkleFloat 4.2s ease-in-out 0.3s infinite; }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.40; }
+      50% { transform: translateY(-12px) scale(1.28); opacity: 0.80; }
+    }
+
     /* Important note */
 
     .important {
@@ -584,8 +809,25 @@
         padding: 22px;
       }
 
+      .bonuses {
+        padding: 32px 18px 28px;
+      }
+
       .step-grid {
         grid-template-columns: 1fr;
+      }
+
+      .bonus-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+      }
+
+      .bonus {
+        padding: 22px 18px 20px;
+      }
+
+      .bonuses-sparkles {
+        font-size: 16px;
       }
     }
 
@@ -716,6 +958,73 @@
           <div class="step-number">03</div>
           <h3>Build Your First Story</h3>
           <p>Set your genre, characters, tone, world, art direction, and panel layout — then generate.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== BONUSES SECTION - STUDIO EDITION ========== -->
+    <section class="bonuses">
+      <!-- Sparkles decorative -->
+      <span class="bonuses-sparkles bonuses-sparkles--tl" aria-hidden="true">✨</span>
+      <span class="bonuses-sparkles bonuses-sparkles--tr" aria-hidden="true">💎</span>
+      <span class="bonuses-sparkles bonuses-sparkles--bl" aria-hidden="true">🌟</span>
+      <span class="bonuses-sparkles bonuses-sparkles--br" aria-hidden="true">✨</span>
+
+      <div class="bonuses-header">
+        <div class="bonuses-badge">
+          <span class="bonuses-badge-emoji">👑</span>
+          <span>Studio Exclusive Bonuses</span>
+          <span class="bonuses-badge-emoji">👑</span>
+        </div>
+        <h2>
+          Your <span class="highlight">Premium Bonus Suite</span> Unlocked
+        </h2>
+        <p class="bonuses-subtitle">
+          As a <strong>Studio Edition</strong> owner, you've earned access to these 
+          two exclusive resources designed to <strong>elevate your creative workflow</strong> 
+          to professional levels. 🔥
+        </p>
+      </div>
+
+      <div class="bonus-grid">
+        <!-- Bonus 1 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🎬</div>
+          <div class="bonus-number">01</div>
+          <h3>The "50 Genre-Tone Blueprints" Director Playbook</h3>
+          <p>
+            Fifty meticulously crafted genre-tone combinations that serve as your creative 
+            launchpad. From noir-thriller hybrids to romantic-fantasy epics, each blueprint 
+            gives you the perfect starting point for your next graphic novel.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1WEe7gdixiIn4HJ7CvkuqAUxFSF_FFCA81F5Ptyld0PQ/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🎬 Open Playbook <span class="bonus-link-arrow">→</span>
+          </a>
+        </article>
+
+        <!-- Bonus 2 -->
+        <article class="bonus">
+          <div class="bonus-emoji">🎞️</div>
+          <div class="bonus-number">02</div>
+          <h3>The "Panel Rhythm" Director's System — Complete Edition</h3>
+          <p>
+            Master the art of visual storytelling with the complete Panel Rhythm system. 
+            Learn professional panel composition, pacing techniques, and cinematic layout 
+            strategies that transform your pages into immersive visual experiences.
+          </p>
+          <a
+            class="bonus-link"
+            href="https://docs.google.com/document/d/1QZ1QhlD-h3mPcJKBzPh39dyxCaV8BUyXj2aNWl91Zuc/edit?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🎞️ Open System <span class="bonus-link-arrow">→</span>
+          </a>
         </article>
       </div>
     </section>
