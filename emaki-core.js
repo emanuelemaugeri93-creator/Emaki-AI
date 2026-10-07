@@ -83,6 +83,16 @@
   // Call at the top of an edition page. Resolves true only if the user may use `edition`.
   // Fails closed: any error keeps the app hidden.
   async function guard(edition) {
+    // Local preview: files opened from disk (file://) or a local dev server skip sign-in so the
+    // author can test edits. The public site (https) always requires login + license.
+    var host = window.location.hostname;
+    if (window.location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1' || host === '[::1]') {
+      state.email = 'Local preview';
+      state.edition = edition;
+      state.local = true;
+      console.info('[EmakiAuth] local preview: sign-in skipped');
+      return true;
+    }
     try {
       var s = await getSession();
       if (!s) { go('index.html?next=' + encodeURIComponent(edition)); return false; }
@@ -98,7 +108,7 @@
     }
   }
 
-  var state = { email: '', edition: '' };
+  var state = { email: '', edition: '', local: false };
 
   // Adds "signed in as ... / Sign out" at the bottom of the API Keys panel.
   function mountAccount() {
@@ -116,7 +126,7 @@
     btn.textContent = 'Sign out';
     btn.addEventListener('click', signOut);
     row.appendChild(who);
-    row.appendChild(btn);
+    if (!state.local) row.appendChild(btn);
     body.appendChild(row);
   }
 
