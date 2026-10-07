@@ -3,94 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Emaki AI — Sign in</title>
+<title>Sign in · Emaki AI</title>
+<meta name="description" content="Sign in to your Emaki AI graphic novel studio.">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0908">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#100c0a; --card:#1a1411; --card2:#211a16; --border:rgba(255,220,160,.12); --border-strong:rgba(255,220,160,.22);
-    --text:#fff4e7; --text2:#d2b9a0; --muted:#927766; --gold:#d4a63a; --gold-light:#f0c879; --ok:#34d399; --err:#f87171;
+    --bg:#0d0908; --bg2:#14100d; --card:rgba(26,20,17,.72); --card-solid:#1a1411; --field:#120d0b;
+    --line:rgba(255,222,170,.10); --line2:rgba(255,222,170,.20);
+    --text:#fff4e7; --text2:#d9c2a8; --muted:#9a8270;
+    --gold:#d4a63a; --gold2:#f0c879; --gold-deep:#a8741a; --ember:#e2552a;
+    --ok:#34d399; --err:#f87171;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   }
-  *{ box-sizing:border-box; }
-  html,body{ margin:0; min-height:100%; background:var(--bg); color:var(--text); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-  body{ display:flex; align-items:center; justify-content:center; padding:24px;
-    background:radial-gradient(900px 500px at 50% -10%, rgba(212,166,58,.12), transparent 60%), var(--bg); }
-  .wrap{ width:100%; max-width:440px; }
-  .brand{ text-align:center; margin-bottom:22px; }
-  .brand h1{ margin:0; font-size:28px; font-weight:800; letter-spacing:-.5px; color:var(--gold); }
-  .brand p{ margin:4px 0 0; color:var(--muted); font-size:13px; }
-  .card{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:26px; box-shadow:0 12px 40px rgba(0,0,0,.45); }
-  h2{ margin:0 0 6px; font-size:18px; }
-  .sub{ margin:0 0 18px; color:var(--text2); font-size:13.5px; }
-  label{ display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-  input[type=email]{ width:100%; height:46px; padding:0 14px; border-radius:12px; border:1px solid var(--border-strong);
-    background:#140f0c; color:var(--text); font-size:15px; outline:none; transition:.15s; }
-  input[type=email]:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,166,58,.18); }
-  button.primary{ width:100%; height:46px; margin-top:14px; border:0; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px;
-    color:#140f0c; background:linear-gradient(135deg,#e2b94a,#b98a22); transition:.15s; }
-  button.primary:hover:not(:disabled){ filter:brightness(1.07); transform:translateY(-1px); }
-  button.primary:disabled{ opacity:.6; cursor:default; }
-  .msg{ margin-top:14px; font-size:13px; border-radius:10px; padding:10px 12px; display:none; }
-  .msg.err{ display:block; background:rgba(248,113,113,.1); color:var(--err); border:1px solid rgba(248,113,113,.25); }
-  .msg.ok{ display:block; background:rgba(52,211,153,.1); color:var(--ok); border:1px solid rgba(52,211,153,.25); }
-  .msg.info{ display:block; background:rgba(212,166,58,.1); color:var(--gold-light); border:1px solid rgba(212,166,58,.28); }
-  .hint{ margin-top:16px; font-size:12px; color:var(--muted); text-align:center; }
-  .who{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; font-size:13px; color:var(--text2); }
-  .who span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .linkbtn{ background:none; border:0; color:var(--muted); text-decoration:underline; cursor:pointer; font-size:12px; padding:2px; }
-  .linkbtn:hover{ color:var(--err); }
-  .eds{ display:flex; flex-direction:column; gap:10px; }
-  .ed{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-radius:14px;
-    border:1px solid var(--border); background:var(--card2); text-decoration:none; color:var(--text); transition:.15s; }
-  .ed b{ display:block; font-size:15px; }
-  .ed small{ color:var(--muted); font-size:12px; }
-  .ed .go{ font-weight:700; color:var(--gold-light); white-space:nowrap; }
-  a.ed:hover{ border-color:var(--gold); background:rgba(212,166,58,.08); transform:translateY(-1px); }
-  .ed.locked{ opacity:.45; }
-  .ed.locked .go{ color:var(--muted); font-weight:500; }
-  .spin{ display:inline-block; width:16px; height:16px; border:2px solid rgba(20,15,12,.25); border-top-color:#140f0c; border-radius:50%; animation:s .7s linear infinite; vertical-align:-3px; margin-right:8px; }
-  .center{ text-align:center; color:var(--muted); padding:30px 0; }
-  .center .spin{ border-color:rgba(212,166,58,.25); border-top-color:var(--gold); width:26px; height:26px; margin:0 0 10px; }
-  @keyframes s{ to{ transform:rotate(360deg); } }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ min-height:100vh; background:var(--bg); color:var(--text); font:15px/1.55 var(--sans); -webkit-font-smoothing:antialiased; }
   [hidden]{ display:none !important; }
+  a{ color:inherit; }
+
+  .shell{ display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); min-height:100vh; }
+
+  /* ---------- Brand panel ---------- */
+  .brand{ position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:center;
+    padding:clamp(32px,6vw,84px); isolation:isolate;
+    background:
+      radial-gradient(900px 600px at 30% 18%, rgba(212,166,58,.20), transparent 60%),
+      radial-gradient(700px 520px at 90% 95%, rgba(226,85,42,.16), transparent 62%),
+      linear-gradient(160deg,#17110d 0%,#0d0908 70%);
+    border-right:1px solid var(--line); }
+  .brand::before{ content:""; position:absolute; inset:0; z-index:-1; opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:56px 56px; mask-image:radial-gradient(70% 70% at 40% 40%,#000 20%,transparent 75%);
+    -webkit-mask-image:radial-gradient(70% 70% at 40% 40%,#000 20%,transparent 75%); }
+  .orb{ position:absolute; border-radius:50%; filter:blur(70px); z-index:-1; opacity:.55; animation:float 14s ease-in-out infinite; }
+  .orb.a{ width:320px; height:320px; background:rgba(212,166,58,.28); top:-90px; left:-60px; }
+  .orb.b{ width:280px; height:280px; background:rgba(226,85,42,.22); bottom:-80px; right:10%; animation-delay:-6s; }
+  @keyframes float{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(26px,-22px); } }
+
+  .logo{ width:min(430px,86%); height:auto; display:block; margin:0 0 6px -14px; filter:drop-shadow(0 10px 40px rgba(212,166,58,.25)); }
+  .brand h1{ font-family:var(--serif); font-weight:400; font-size:clamp(34px,4.2vw,56px); line-height:1.06; letter-spacing:-.01em; max-width:15em; }
+  .brand h1 em{ font-style:italic; color:var(--gold2); }
+  .lead{ margin-top:16px; max-width:30em; color:var(--text2); font-size:16px; }
+  .points{ list-style:none; margin-top:30px; display:grid; gap:14px; }
+  .points li{ display:flex; gap:14px; align-items:flex-start; color:var(--text2); font-size:14.5px; }
+  .points .ic{ flex:none; width:36px; height:36px; border-radius:11px; display:grid; place-items:center;
+    background:rgba(212,166,58,.10); border:1px solid rgba(212,166,58,.28); color:var(--gold2); }
+  .points b{ display:block; color:var(--text); font-weight:600; font-size:15px; }
+  .chips{ margin-top:34px; display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600; letter-spacing:.02em;
+    color:var(--gold2); border:1px solid rgba(212,166,58,.30); background:rgba(212,166,58,.07); }
+
+  /* ---------- Auth panel ---------- */
+  .auth{ display:flex; align-items:center; justify-content:center; padding:clamp(20px,4vw,56px);
+    background:radial-gradient(700px 500px at 70% 10%, rgba(212,166,58,.07), transparent 60%), var(--bg); }
+  .card{ width:100%; max-width:430px; background:var(--card); border:1px solid var(--line2); border-radius:22px;
+    padding:clamp(24px,4vw,36px); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04); animation:rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+  .card h2{ font-family:var(--serif); font-weight:400; font-size:32px; line-height:1.1; margin-bottom:6px; }
+  .sub{ color:var(--text2); font-size:14.5px; margin-bottom:22px; }
+  .sub b{ color:var(--text); font-weight:600; }
+
+  label.lbl{ display:block; font-size:12px; font-weight:600; color:var(--text2); margin-bottom:8px; }
+  .field{ position:relative; }
+  .field svg{ position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; transition:.15s; }
+  .field input{ width:100%; height:52px; padding:0 16px 0 46px; border-radius:14px; border:1px solid var(--line2);
+    background:var(--field); color:var(--text); font:inherit; font-size:15.5px; outline:none; transition:.15s; }
+  .field input::placeholder{ color:#6d5a4d; }
+  .field input:hover{ border-color:rgba(255,222,170,.32); }
+  .field input:focus{ border-color:var(--gold); box-shadow:0 0 0 4px rgba(212,166,58,.16); }
+  .field:focus-within svg{ color:var(--gold2); }
+  .field input[aria-invalid="true"]{ border-color:var(--err); box-shadow:0 0 0 4px rgba(248,113,113,.12); }
+
+  .btn{ position:relative; width:100%; height:52px; margin-top:14px; border:0; border-radius:14px; cursor:pointer;
+    font:inherit; font-weight:650; font-size:15.5px; color:#1a1208; display:flex; align-items:center; justify-content:center; gap:10px;
+    background:linear-gradient(180deg,#f2c95c 0%,#d4a63a 55%,#b98822 100%);
+    box-shadow:0 10px 26px rgba(212,166,58,.28), inset 0 1px 0 rgba(255,255,255,.45); transition:.18s; overflow:hidden; }
+  .btn:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 14px 34px rgba(212,166,58,.38), inset 0 1px 0 rgba(255,255,255,.5); }
+  .btn:active:not(:disabled){ transform:none; }
+  .btn:focus-visible{ outline:2px solid var(--gold2); outline-offset:3px; }
+  .btn:disabled{ opacity:.65; cursor:default; }
+  .btn.ghost{ background:rgba(255,255,255,.04); color:var(--text); box-shadow:none; border:1px solid var(--line2); }
+  .btn.ghost:hover:not(:disabled){ background:rgba(255,255,255,.08); box-shadow:none; }
+  .btn svg{ transition:transform .18s; }
+  .btn:hover:not(:disabled) svg.arrow{ transform:translateX(3px); }
+
+  .msg{ margin-top:14px; font-size:13px; border-radius:12px; padding:11px 14px; display:none; line-height:1.45; }
+  .msg.err{ display:block; background:rgba(248,113,113,.09); color:#fca5a5; border:1px solid rgba(248,113,113,.28); }
+  .msg.ok{ display:block; background:rgba(52,211,153,.09); color:#6ee7b7; border:1px solid rgba(52,211,153,.28); }
+  .msg.info{ display:block; background:rgba(212,166,58,.09); color:var(--gold2); border:1px solid rgba(212,166,58,.30); }
+
+  .steps{ margin-top:24px; padding-top:20px; border-top:1px solid var(--line); display:grid; gap:12px; }
+  .step{ display:flex; gap:12px; align-items:center; font-size:13px; color:var(--text2); }
+  .step i{ flex:none; width:24px; height:24px; border-radius:50%; display:grid; place-items:center; font-style:normal; font-size:12px; font-weight:700;
+    color:var(--gold2); background:rgba(212,166,58,.10); border:1px solid rgba(212,166,58,.30); }
+  .secure{ margin-top:20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; color:var(--muted); }
+
+  /* sent state */
+  .sent-ic{ width:64px; height:64px; margin:0 0 18px; border-radius:20px; display:grid; place-items:center; color:var(--gold2);
+    background:rgba(212,166,58,.10); border:1px solid rgba(212,166,58,.32); box-shadow:0 0 40px rgba(212,166,58,.18); animation:pulse 2.6s ease-in-out infinite; }
+  @keyframes pulse{ 50%{ box-shadow:0 0 60px rgba(212,166,58,.32); } }
+  .tip{ margin-top:18px; font-size:12.5px; color:var(--muted); text-align:center; }
+  .linkbtn{ background:none; border:0; color:var(--gold2); font:inherit; font-size:inherit; cursor:pointer; text-decoration:underline; text-underline-offset:3px; padding:0; }
+  .linkbtn:disabled{ color:var(--muted); text-decoration:none; cursor:default; }
+  .linkbtn.muted{ color:var(--muted); }
+  .linkbtn.muted:hover{ color:var(--err); }
+
+  /* apps state */
+  .who{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; padding:10px 12px;
+    border-radius:14px; background:rgba(255,255,255,.03); border:1px solid var(--line); font-size:13px; color:var(--text2); }
+  .who .av{ flex:none; width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:13px; color:#1a1208; background:linear-gradient(135deg,#f2c95c,#b98822); }
+  .who .em{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .eds{ display:grid; gap:10px; }
+  .ed{ display:flex; align-items:center; gap:14px; padding:14px 16px; border-radius:16px; text-decoration:none; color:var(--text);
+    background:rgba(255,255,255,.03); border:1px solid var(--line); transition:.18s; }
+  .ed .ei{ flex:none; width:42px; height:42px; border-radius:13px; display:grid; place-items:center; color:var(--gold2);
+    background:rgba(212,166,58,.10); border:1px solid rgba(212,166,58,.28); }
+  .ed .et{ flex:1; min-width:0; }
+  .ed b{ display:block; font-size:15px; font-weight:600; }
+  .ed small{ display:block; font-size:12px; color:var(--muted); }
+  .ed .go{ flex:none; font-size:12.5px; font-weight:600; color:var(--gold2); display:flex; align-items:center; gap:6px; }
+  a.ed:hover{ border-color:rgba(212,166,58,.55); background:rgba(212,166,58,.07); transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.35); }
+  a.ed:hover .go svg{ transform:translateX(3px); }
+  .go svg{ transition:transform .18s; }
+  .ed.locked{ opacity:.5; }
+  .ed.locked .ei{ color:var(--muted); background:rgba(255,255,255,.04); border-color:var(--line); }
+  .ed.locked .go{ color:var(--muted); font-weight:500; }
+  .nolic{ margin-top:14px; font-size:12.5px; color:var(--text2); text-align:center; }
+
+  .center{ text-align:center; padding:46px 0; color:var(--muted); font-size:14px; }
+  .spin{ display:inline-block; width:18px; height:18px; border:2px solid rgba(26,18,8,.25); border-top-color:#1a1208; border-radius:50%; animation:s .7s linear infinite; }
+  .center .spin{ width:30px; height:30px; border:3px solid rgba(212,166,58,.22); border-top-color:var(--gold); margin-bottom:14px; }
+  @keyframes s{ to{ transform:rotate(360deg); } }
+
+  .foot{ margin-top:26px; text-align:center; font-size:12px; color:var(--muted); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:920px){
+    .shell{ grid-template-columns:1fr; }
+    .brand{ padding:28px 22px 8px; border-right:0; border-bottom:1px solid var(--line); align-items:center; text-align:center; }
+    .logo{ width:min(260px,70%); margin:0 auto; }
+    .brand h1, .lead, .points, .chips{ display:none; }
+    .auth{ padding:22px 16px 40px; align-items:flex-start; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand"><h1>Emaki AI</h1><p>Graphic novel studio</p></div>
-  <div class="card">
+<div class="shell">
 
-    <div id="viewLoading" class="center"><div class="spin"></div><div>Loading…</div></div>
+  <!-- Brand -->
+  <aside class="brand" aria-hidden="false">
+    <span class="orb a"></span><span class="orb b"></span>
+    <img class="logo" src="assets/emaki-logo.png" alt="Emaki AI" width="900" height="632" decoding="async">
+    <h1>Turn your ideas into <em>illustrated graphic novels.</em></h1>
+    <p class="lead">Plan the story, build your cast, generate every scene and add the dialogue. All in one studio.</p>
+    <ul class="points">
+      <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></span>
+        <span><b>Story and scenes, generated</b>From a single idea to a full scene-by-scene script.</span></li>
+      <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg></span>
+        <span><b>Artwork for every page</b>Choose your style and your image model.</span></li>
+      <li><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+        <span><b>Speech bubbles and export</b>Letter your pages and export them, ready to share.</span></li>
+    </ul>
+    <div class="chips"><span class="chip">Creator</span><span class="chip">Studio</span><span class="chip">Master</span><span class="chip">Titan</span></div>
+  </aside>
 
-    <!-- Signed out -->
-    <form id="viewLogin" hidden novalidate>
-      <h2>Sign in</h2>
-      <p class="sub">Enter the <b>email you used to buy</b>. We'll send you a one-time link, no password needed.</p>
-      <label for="email">Email</label>
-      <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
-      <button id="sendBtn" class="primary" type="submit">Send me a login link</button>
-      <div id="loginMsg" class="msg"></div>
-      <div class="hint">Open the link on any device. It expires after a short time.</div>
-    </form>
+  <!-- Auth -->
+  <main class="auth">
+    <div class="card" id="card">
 
-    <!-- Link sent -->
-    <div id="viewSent" hidden>
-      <h2>Check your inbox</h2>
-      <p class="sub">We sent a login link to <b id="sentTo"></b>. Click it to continue.<br>Nothing there? Check your spam folder.</p>
-      <button id="againBtn" class="primary" type="button" style="background:var(--card2);color:var(--text);border:1px solid var(--border-strong)">Use a different email</button>
-    </div>
+      <div id="viewLoading" class="center"><div class="spin"></div><div>Checking your session…</div></div>
 
-    <!-- Signed in -->
-    <div id="viewApps" hidden>
-      <div class="who"><span id="whoEmail"></span><button id="outBtn" class="linkbtn" type="button">Sign out</button></div>
-      <div id="appsMsg" class="msg"></div>
-      <div id="eds" class="eds"></div>
-      <div id="noLicense" class="hint" hidden>
-        No active license found for this email. Make sure you sign in with the <b>same email you purchased with</b>.
-        If you just bought, wait a minute and reload.
+      <!-- Signed out -->
+      <form id="viewLogin" hidden novalidate>
+        <h2>Welcome back</h2>
+        <p class="sub">Sign in with the <b>email you used at checkout</b>. We'll send you a secure one-time link. No password needed.</p>
+        <label class="lbl" for="email">Email address</label>
+        <div class="field">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l7.7 5.4a1.4 1.4 0 0 0 1.6 0l7.7-5.4"/></svg>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com" required>
+        </div>
+        <button id="sendBtn" class="btn" type="submit"><span id="sendLabel">Continue with email</span>
+          <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <div id="loginMsg" class="msg" role="alert" aria-live="polite"></div>
+        <div class="steps">
+          <div class="step"><i>1</i><span>Enter the email you purchased with</span></div>
+          <div class="step"><i>2</i><span>Open the link we email you</span></div>
+          <div class="step"><i>3</i><span>Start creating. Your browser remembers you.</span></div>
+        </div>
+        <div class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Passwordless, encrypted sign-in</div>
+      </form>
+
+      <!-- Link sent -->
+      <div id="viewSent" hidden>
+        <div class="sent-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l7.7 5.4a1.4 1.4 0 0 0 1.6 0l7.7-5.4"/></svg></div>
+        <h2>Check your inbox</h2>
+        <p class="sub">We sent a sign-in link to <b id="sentTo"></b>. Open it on any device to continue.</p>
+        <button id="againBtn" class="btn ghost" type="button" style="margin-top:4px">Use a different email</button>
+        <p class="tip">Nothing yet? Check your spam folder.<br>
+          <button id="resendBtn" class="linkbtn" type="button" disabled>Resend link</button></p>
+        <div id="sentMsg" class="msg" role="alert" aria-live="polite"></div>
       </div>
-    </div>
 
-  </div>
+      <!-- Signed in -->
+      <div id="viewApps" hidden>
+        <h2>Your studios</h2>
+        <p class="sub">Choose an edition to open.</p>
+        <div class="who"><span class="av" id="avatar"></span><span class="em" id="whoEmail"></span><button id="outBtn" class="linkbtn muted" type="button">Sign out</button></div>
+        <div id="appsMsg" class="msg" role="status" aria-live="polite"></div>
+        <div id="eds" class="eds"></div>
+        <p id="noLicense" class="nolic" hidden>No active license found for this email.<br>Make sure you use the <b>same email as your purchase</b>. If you just bought, wait a minute and reload.</p>
+      </div>
+
+      <div class="foot">© Emaki AI</div>
+    </div>
+  </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -100,17 +234,56 @@
   var $ = function(id){ return document.getElementById(id); };
   var params = new URLSearchParams(location.search);
   var need = params.get('need');
+  var SVG_ED = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>';
+  var SVG_GO = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var SVG_LOCK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  var TAGLINE = { creator:'Graphic novel studio', studio:'Graphic novel studio', master:'Graphic novel studio', titan:'Long-form engine' };
+  var cooldownTimer = null, lastEmail = '';
 
   function show(which){
     ['viewLoading','viewLogin','viewSent','viewApps'].forEach(function(v){ $(v).hidden = (v !== which); });
   }
   function msg(el, kind, text){ el.className = 'msg ' + kind; el.textContent = text; }
+  function clearMsg(el){ el.className = 'msg'; el.textContent = ''; }
+  function friendly(e){
+    var t = (e && e.message) || 'Something went wrong. Please try again.';
+    if(/rate limit|too many|security purposes|after \d+ seconds/i.test(t)) return 'Too many attempts. Please wait a minute and try again.';
+    if(/failed to fetch|network/i.test(t)) return 'Could not reach the server. Check your connection and try again.';
+    return t;
+  }
+  function startCooldown(seconds){
+    var btn = $('resendBtn'); clearInterval(cooldownTimer);
+    var left = seconds; btn.disabled = true; btn.textContent = 'Resend link in ' + left + 's';
+    cooldownTimer = setInterval(function(){
+      left--;
+      if(left <= 0){ clearInterval(cooldownTimer); btn.disabled = false; btn.textContent = 'Resend link'; }
+      else btn.textContent = 'Resend link in ' + left + 's';
+    }, 1000);
+  }
+  async function send(email, fromResend){
+    var btn = $('sendBtn'), label = $('sendLabel');
+    if(!fromResend){ btn.disabled = true; label.innerHTML = '<span class="spin"></span>Sending…'; clearMsg($('loginMsg')); }
+    else { clearMsg($('sentMsg')); $('resendBtn').disabled = true; }
+    try{
+      await EmakiAuth.sendLoginLink(email);
+      lastEmail = email; $('sentTo').textContent = email;
+      show('viewSent'); startCooldown(30);
+      if(fromResend) msg($('sentMsg'), 'ok', 'A new link is on its way.');
+    }catch(e){
+      if(fromResend){ msg($('sentMsg'), 'err', friendly(e)); startCooldown(30); }
+      else { msg($('loginMsg'), 'err', friendly(e)); $('email').setAttribute('aria-invalid','true'); }
+    }finally{
+      btn.disabled = false; label.textContent = 'Continue with email';
+    }
+  }
 
   async function render(){
     try{
       var session = await EmakiAuth.getSession();
-      if(!session){ show('viewLogin'); return; }
-      $('whoEmail').textContent = session.user.email || '';
+      if(!session){ show('viewLogin'); setTimeout(function(){ try{ $('email').focus(); }catch(e){} }, 60); return; }
+      var email = session.user.email || '';
+      $('whoEmail').textContent = email;
+      $('avatar').textContent = (email[0] || '?').toUpperCase();
       var owned = await EmakiAuth.myEditions();
       var list = $('eds'); list.innerHTML = '';
       Object.keys(EmakiAuth.EDITIONS).forEach(function(id){
@@ -118,23 +291,22 @@
         var el = document.createElement(has ? 'a' : 'div');
         el.className = 'ed' + (has ? '' : ' locked');
         if(has) el.href = ed.file;
-        var left = document.createElement('div');
+        var ic = document.createElement('span'); ic.className = 'ei'; ic.innerHTML = SVG_ED;
+        var t = document.createElement('span'); t.className = 'et';
         var b = document.createElement('b'); b.textContent = ed.label;
-        var s = document.createElement('small'); s.textContent = has ? 'Included in your license' : 'Not purchased';
-        left.appendChild(b); left.appendChild(s);
-        var go = document.createElement('span'); go.className = 'go'; go.textContent = has ? 'Open →' : 'Locked';
-        el.appendChild(left); el.appendChild(go);
+        var s = document.createElement('small'); s.textContent = has ? TAGLINE[id] : 'Not included in your account';
+        t.appendChild(b); t.appendChild(s);
+        var go = document.createElement('span'); go.className = 'go';
+        go.innerHTML = has ? 'Open ' + SVG_GO : SVG_LOCK;
+        el.appendChild(ic); el.appendChild(t); el.appendChild(go);
         list.appendChild(el);
       });
       $('noLicense').hidden = owned.length > 0;
       if(need && EmakiAuth.EDITIONS[need] && owned.indexOf(need) === -1){
-        msg($('appsMsg'), 'info', 'This account does not have a license for ' + EmakiAuth.EDITIONS[need].label + '.');
-      } else {
-        $('appsMsg').className = 'msg';
-      }
-      // Single edition and arrived from an app link: go straight in.
+        msg($('appsMsg'), 'info', 'This account does not include ' + EmakiAuth.EDITIONS[need].label + '.');
+      } else { clearMsg($('appsMsg')); }
       var next = params.get('next');
-      if(next && owned.indexOf(next) !== -1 && EmakiAuth.EDITIONS[next]){
+      if(next && EmakiAuth.EDITIONS[next] && owned.indexOf(next) !== -1){
         location.replace(EmakiAuth.EDITIONS[next].file); return;
       }
       show('viewApps');
@@ -145,28 +317,22 @@
     }
   }
 
-  $('viewLogin').addEventListener('submit', async function(ev){
+  $('viewLogin').addEventListener('submit', function(ev){
     ev.preventDefault();
     var email = $('email').value.trim();
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg($('loginMsg'), 'err', 'Please enter a valid email address.'); return; }
-    var btn = $('sendBtn'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Sending…';
-    $('loginMsg').className = 'msg';
-    try{
-      await EmakiAuth.sendLoginLink(email);
-      $('sentTo').textContent = email;
-      show('viewSent');
-    }catch(e){
-      var text = (e && e.message) || 'Something went wrong.';
-      if(/rate limit|too many|security purposes/i.test(text)) text = 'Too many attempts. Please wait a minute and try again.';
-      msg($('loginMsg'), 'err', text);
-    }finally{
-      btn.disabled = false; btn.textContent = 'Send me a login link';
+    $('email').removeAttribute('aria-invalid');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+      $('email').setAttribute('aria-invalid','true');
+      msg($('loginMsg'), 'err', 'Please enter a valid email address.'); $('email').focus(); return;
     }
+    send(email, false);
   });
-  $('againBtn').addEventListener('click', function(){ show('viewLogin'); $('email').focus(); });
+  $('email').addEventListener('input', function(){ $('email').removeAttribute('aria-invalid'); });
+  $('againBtn').addEventListener('click', function(){ clearInterval(cooldownTimer); clearMsg($('loginMsg')); show('viewLogin'); $('email').focus(); $('email').select(); });
+  $('resendBtn').addEventListener('click', function(){ if(lastEmail) send(lastEmail, true); });
   $('outBtn').addEventListener('click', function(){ EmakiAuth.signOut(); });
 
-  // Magic link lands here with the session in the URL; supabase-js picks it up on load.
+  // The magic link lands here with the session in the URL; supabase-js picks it up on load.
   render().then(function(){
     if(location.hash.indexOf('access_token') !== -1 || location.search.indexOf('code=') !== -1){
       history.replaceState(null, '', location.pathname + (need ? '?need=' + encodeURIComponent(need) : ''));
