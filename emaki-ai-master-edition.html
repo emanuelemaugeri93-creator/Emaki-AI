@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
-  #appRoot { display: none; }
+  #appRoot { display: none; } /* shown only after the server confirms login + license */
 :root {
   /* ── Base surfaces — obsidian / oxblood ── */
   --bg-primary:    #0f0909;
@@ -845,6 +844,58 @@ label.field-label {
 .panel-body { padding: 12px; display: flex; flex-direction: column; gap: 14px; }
 .panel-divider { height: 1px; background: var(--border); margin: 4px 0; }
 .settings-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+/* ===== Side panels: API keys + Settings (clean layout) ===== */
+.panel-note{ font-size:11px; color:var(--text-muted); display:flex; align-items:center; gap:6px; line-height:1.4; }
+.key-card{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg);
+  padding:10px 12px; display:flex; flex-direction:column; gap:8px; transition:border-color .15s;
+}
+.key-card:focus-within{ border-color:var(--border-accent); }
+.key-card-head{ display:flex; align-items:center; gap:8px; }
+.key-card-name{ font-weight:700; font-size:13px; color:var(--text-primary); }
+.key-card-hint{ font-size:11px; color:var(--text-muted); }
+.key-status{ margin-left:auto; display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary); white-space:nowrap; }
+.key-card-input{ display:flex; gap:6px; align-items:center; }
+.key-card-input .input-field{ flex:1; min-width:0; }
+.key-icon-btn, .key-test-btn{
+  height:36px; border-radius:var(--radius-md); border:1px solid var(--border-strong);
+  background:var(--bg-tertiary); color:var(--text-secondary); cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; transition:.15s; flex-shrink:0;
+}
+.key-icon-btn{ width:36px; }
+.key-test-btn{ padding:0 12px; font-size:12px; font-weight:600; color:var(--text-accent); }
+.key-icon-btn:hover, .key-test-btn:hover{ border-color:var(--border-accent); background:var(--accent-dim); color:var(--text-accent); }
+.key-test-btn:disabled{ opacity:.7; cursor:default; }
+.link-danger{ background:none; border:0; color:var(--text-muted); font-size:11px; text-decoration:underline; cursor:pointer; align-self:center; padding:4px; }
+.link-danger:hover{ color:var(--color-error); }
+.set-section{ display:flex; flex-direction:column; gap:8px; }
+.set-section-title{ font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:6px; }
+.set-hint{ font-size:11px; color:var(--text-muted); line-height:1.4; }
+.seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:4px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:var(--radius-md); padding:3px; }
+.seg button{ padding:7px 4px; font-size:12px; font-weight:600; border-radius:7px; color:var(--text-secondary); background:transparent; border:0; cursor:pointer; transition:.15s; }
+.seg button:hover:not(.active){ color:var(--text-primary); background:var(--bg-card); }
+.seg button.active{ background:var(--accent-dim); color:var(--text-accent); box-shadow:inset 0 0 0 1px var(--border-accent); }
+
+/* ===== Generate dropdown ===== */
+.gen-menu-wrap{ position:relative; }
+.gen-menu{
+  position:absolute; top:calc(100% + 6px); left:0; min-width:310px; z-index:60; display:none;
+  background:var(--bg-card); border:1px solid var(--border-strong); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-md); padding:6px;
+}
+.gen-menu.open{ display:block; }
+.gen-menu-label{ font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); padding:6px 10px 2px; }
+.gen-menu-item{
+  display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left;
+  padding:8px 10px; border-radius:var(--radius-md); color:var(--text-primary);
+  background:transparent; border:0; cursor:pointer; font-size:13px; transition:.12s;
+}
+.gen-menu-item:hover{ background:var(--accent-dim); }
+.gen-menu-item i{ margin-top:2px; color:var(--accent-light); flex-shrink:0; }
+.gen-menu-item b{ display:block; font-weight:700; }
+.gen-menu-item small{ display:block; color:var(--text-muted); font-size:11px; font-weight:400; margin-top:1px; }
+.gen-menu-sep{ height:1px; background:var(--border); margin:4px 6px; }
 .api-provider-block {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -1048,6 +1099,30 @@ label.field-label {
   display:inline-block;
 }
 @keyframes spin{ to{ transform:rotate(360deg); } }
+
+/* Image generation spinner overlay */
+.img-gen-overlay{
+  position:absolute; inset:0; z-index:50;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+  background:rgba(10,10,14,0.55); backdrop-filter:blur(2px);
+  border-radius:inherit; pointer-events:none;
+}
+.img-gen-spinner{
+  width:46px; height:46px;
+  border:4px solid rgba(212,166,58,0.25);
+  border-top-color:var(--accent-light);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+.img-gen-label{ font-size:.8rem; font-weight:600; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.7); }
+.scene-card.img-generating{ position:relative; }
+.scene-card.img-generating .scene-thumb,
+.scene-card.img-generating .scene-thumb-placeholder{ opacity:.45; }
+.scene-card.img-generating::after{
+  content:''; position:absolute; top:8px; right:8px; width:16px; height:16px;
+  border:2px solid rgba(212,166,58,0.25); border-top-color:var(--accent-light);
+  border-radius:50%; animation:spin .7s linear infinite; pointer-events:none;
+}
 
 .toast{
   min-width:280px;
@@ -2061,72 +2136,10 @@ select.input-field{ appearance:none; }
   color: #34d399;
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="emaki-core.js"></script>
 </head>
 <body class="dark">
-
-<div id="lockScreen">
-  <div class="lock-card">
-
-    <!-- Logo -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:4px;">
-      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="16" width="26" height="34" rx="3" fill="#b23a2b" opacity="0.15" stroke="#b23a2b" stroke-width="1.5"/>
-        <rect x="34" y="16" width="26" height="34" rx="3" fill="#b23a2b" opacity="0.15" stroke="#b23a2b" stroke-width="1.5"/>
-        <line x1="32" y1="16" x2="32" y2="50" stroke="#b23a2b" stroke-width="2"/>
-        <line x1="10" y1="24" x2="26" y2="24" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <line x1="10" y1="30" x2="26" y2="30" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <line x1="10" y1="36" x2="26" y2="36" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <line x1="38" y1="24" x2="54" y2="24" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <line x1="38" y1="30" x2="54" y2="30" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <line x1="38" y1="36" x2="54" y2="36" stroke="#b23a2b" stroke-width="1.2" opacity="0.5"/>
-        <path d="M52 8 L53.2 11.8 L57 13 L53.2 14.2 L52 18 L50.8 14.2 L47 13 L50.8 11.8 Z" fill="#d88a5b"/>
-        <circle cx="58" cy="8" r="1.5" fill="#b23a2b" opacity="0.6"/>
-        <circle cx="46" cy="6" r="1" fill="#b23a2b" opacity="0.4"/>
-      </svg>
-      <div style="font-size:26px;font-weight:800;color:#b23a2b;letter-spacing:-0.5px;">Emaki AI <span style="font-size:14px;font-weight:700;color:var(--accent-light);border:1px solid var(--border-accent);border-radius:5px;padding:1px 6px;vertical-align:middle;margin-left:2px;">Master</span></div>
-      <div style="font-size:13px;color:var(--color-text-muted,#7fa2ad);">Master Edition · Graphic Novel Studio</div>
-    </div>
-
-    <!-- Divider -->
-    <div style="width:100%;height:1px;background:rgba(178,58,43,0.15);margin:4px 0;"></div>
-
-    <!-- Lock icon + label -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7fa2ad" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-      </svg>
-      <div style="font-size:13px;color:var(--color-text-muted,#7fa2ad);text-align:center;">Enter your Master Edition access code to unlock</div>
-    </div>
-
-    <!-- Input -->
-    <input
-      type="text"
-      id="accessCodeInput"
-      placeholder="XXXXXXXXXX-XXXX-XXXX-XXXX"
-      maxlength="30"
-      autocomplete="off"
-      spellcheck="false"
-    />
-
-    <!-- Button -->
-    <button id="unlockBtn" onclick="attemptUnlock()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
-      </svg>
-      Unlock Master Edition
-    </button>
-
-    <!-- Error -->
-    <div id="lockError">❌ Invalid access code. Please check your purchase confirmation.</div>
-
-  </div>
-
-  <div class="lock-footer">
-    Purchased Emaki AI Master on Warrior+? Check your delivery page for the access code.
-  </div>
-</div>
 
 <div id="appRoot">
 
@@ -2251,60 +2264,52 @@ select.input-field{ appearance:none; }
           <button class="panel-close-btn" onclick="closeSidePanel('api')"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <div class="panel-body">
-          <!-- Anthropic -->
-          <label class="field-label">Anthropic</label>
-          <div class="relative mb-1">
-            <input type="password" id="anthropicKey" class="input-field pr-9" placeholder="sk-ant-..." oninput="appState.apiKeys.anthropic=this.value; localStorage.setItem('emaki_key_anthropic', this.value); updateApiStatusDot('anthropic','idle');">
-            <button onclick="toggleKeyVisibility('anthropic')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
-              <i data-lucide="eye" class="w-4 h-4" id="anthropicEyeIcon"></i>
-            </button>
+          <p class="panel-note"><i data-lucide="lock" class="w-3.5 h-3.5"></i> Keys stay in this browser only. Add the ones you use.</p>
+          <div class="key-card">
+            <div class="key-card-head">
+              <span class="key-card-name">Anthropic</span><span class="key-card-hint">Claude</span>
+              <span class="key-status"><span class="status-dot" id="apiStatusDot-anthropic"></span><span id="apiStatusLabel-anthropic">Not set</span></span>
+            </div>
+            <div class="key-card-input">
+              <input type="password" id="anthropicKey" class="input-field" placeholder="sk-ant-…" autocomplete="off" spellcheck="false" oninput="appState.apiKeys.anthropic=this.value; localStorage.setItem('emaki_key_anthropic', this.value); updateApiStatusDot('anthropic','idle');">
+              <button class="key-icon-btn" onclick="toggleKeyVisibility('anthropic')" title="Show / hide key" tabindex="-1"><i data-lucide="eye" class="w-4 h-4" id="anthropicEyeIcon"></i></button>
+              <button class="key-test-btn" id="testConnBtn-anthropic" onclick="testConnection('anthropic')" title="Check that this key works"><span id="testConnContent-anthropic">Test</span></button>
+            </div>
           </div>
-          <div class="flex items-center gap-2 mb-3 text-xs text-secondary">
-            <span class="status-dot" id="apiStatusDot-anthropic"></span>
-            <span id="apiStatusLabel-anthropic">Not tested</span>
+          <div class="key-card">
+            <div class="key-card-head">
+              <span class="key-card-name">OpenAI</span><span class="key-card-hint">GPT · images</span>
+              <span class="key-status"><span class="status-dot" id="apiStatusDot-openai"></span><span id="apiStatusLabel-openai">Not set</span></span>
+            </div>
+            <div class="key-card-input">
+              <input type="password" id="openaiKey" class="input-field" placeholder="sk-…" autocomplete="off" spellcheck="false" oninput="appState.apiKeys.openai=this.value; localStorage.setItem('emaki_key_openai', this.value); updateApiStatusDot('openai','idle');">
+              <button class="key-icon-btn" onclick="toggleKeyVisibility('openai')" title="Show / hide key" tabindex="-1"><i data-lucide="eye" class="w-4 h-4" id="openaiEyeIcon"></i></button>
+              <button class="key-test-btn" id="testConnBtn-openai" onclick="testConnection('openai')" title="Check that this key works"><span id="testConnContent-openai">Test</span></button>
+            </div>
           </div>
-
-          <!-- OpenAI -->
-          <label class="field-label">OpenAI</label>
-          <div class="relative mb-1">
-            <input type="password" id="openaiKey" class="input-field pr-9" placeholder="sk-..." oninput="appState.apiKeys.openai=this.value; localStorage.setItem('emaki_key_openai', this.value); updateApiStatusDot('openai','idle');">
-            <button onclick="toggleKeyVisibility('openai')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
-              <i data-lucide="eye" class="w-4 h-4" id="openaiEyeIcon"></i>
-            </button>
+          <div class="key-card">
+            <div class="key-card-head">
+              <span class="key-card-name">Google</span><span class="key-card-hint">Gemini · Nano Banana</span>
+              <span class="key-status"><span class="status-dot" id="apiStatusDot-gemini"></span><span id="apiStatusLabel-gemini">Not set</span></span>
+            </div>
+            <div class="key-card-input">
+              <input type="password" id="geminiKey" class="input-field" placeholder="AIza…" autocomplete="off" spellcheck="false" oninput="appState.apiKeys.gemini=this.value; localStorage.setItem('emaki_key_gemini', this.value); updateApiStatusDot('gemini','idle');">
+              <button class="key-icon-btn" onclick="toggleKeyVisibility('gemini')" title="Show / hide key" tabindex="-1"><i data-lucide="eye" class="w-4 h-4" id="geminiEyeIcon"></i></button>
+              <button class="key-test-btn" id="testConnBtn-gemini" onclick="testConnection('gemini')" title="Check that this key works"><span id="testConnContent-gemini">Test</span></button>
+            </div>
           </div>
-          <div class="flex items-center gap-2 mb-3 text-xs text-secondary">
-            <span class="status-dot" id="apiStatusDot-openai"></span>
-            <span id="apiStatusLabel-openai">Not tested</span>
+          <div class="key-card">
+            <div class="key-card-head">
+              <span class="key-card-name">Kie.ai</span><span class="key-card-hint">text + images · one key</span>
+              <span class="key-status"><span class="status-dot" id="apiStatusDot-kie"></span><span id="apiStatusLabel-kie">Not set</span></span>
+            </div>
+            <div class="key-card-input">
+              <input type="password" id="kieKey" class="input-field" placeholder="Kie API key" autocomplete="off" spellcheck="false" oninput="appState.apiKeys.kie=this.value; localStorage.setItem('emaki_key_kie', this.value); updateApiStatusDot('kie','idle');">
+              <button class="key-icon-btn" onclick="toggleKeyVisibility('kie')" title="Show / hide key" tabindex="-1"><i data-lucide="eye" class="w-4 h-4" id="kieEyeIcon"></i></button>
+              <button class="key-test-btn" id="testConnBtn-kie" onclick="testConnection('kie')" title="Check that this key works"><span id="testConnContent-kie">Test</span></button>
+            </div>
           </div>
-
-          <!-- Gemini -->
-          <label class="field-label">Gemini</label>
-          <div class="relative mb-1">
-            <input type="password" id="geminiKey" class="input-field pr-9" placeholder="AIza..." oninput="appState.apiKeys.gemini=this.value; localStorage.setItem('emaki_key_gemini', this.value); updateApiStatusDot('gemini','idle');">
-            <button onclick="toggleKeyVisibility('gemini')" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-primary" tabindex="-1">
-              <i data-lucide="eye" class="w-4 h-4" id="geminiEyeIcon"></i>
-            </button>
-          </div>
-          <div class="flex items-center gap-2 mb-3 text-xs text-secondary">
-            <span class="status-dot" id="apiStatusDot-gemini"></span>
-            <span id="apiStatusLabel-gemini">Not tested</span>
-          </div>
-
-          <button onclick="clearSavedKeys()" class="btn-danger w-full justify-center flex items-center gap-2 py-1.5 text-xs">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Saved Keys
-          </button>
-
-          <div class="panel-divider"></div>
-
-          <button onclick="testConnection('anthropic')" id="testConnBtn-anthropic" class="btn-secondary w-full justify-center flex items-center gap-2 py-1.5 text-xs">
-            <span id="testConnContent-anthropic"><i data-lucide="plug-zap" class="w-3.5 h-3.5 inline"></i> Test Anthropic</span>
-          </button>
-          <button onclick="testConnection('openai')" id="testConnBtn-openai" class="btn-secondary w-full justify-center flex items-center gap-2 py-1.5 text-xs mt-1">
-            <span id="testConnContent-openai"><i data-lucide="plug-zap" class="w-3.5 h-3.5 inline"></i> Test OpenAI</span>
-          </button>
-          <button onclick="testConnection('gemini')" id="testConnBtn-gemini" class="btn-secondary w-full justify-center flex items-center gap-2 py-1.5 text-xs mt-1">
-            <span id="testConnContent-gemini"><i data-lucide="plug-zap" class="w-3.5 h-3.5 inline"></i> Test Gemini</span>
-          </button>
+          <button class="link-danger" onclick="clearSavedKeys()">Clear all saved keys</button>
         </div>
       </div>
     </div>
@@ -2317,38 +2322,73 @@ select.input-field{ appearance:none; }
           <button class="panel-close-btn" onclick="closeSidePanel('settings')"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <div class="panel-body">
-          <label class="field-label">Text Model</label>
-          <select id="textModel" class="input-field" onchange="appState.settings.textModel=this.value; markModified();">
+          <div class="set-section">
+            <div class="set-section-title"><i data-lucide="type" class="w-3.5 h-3.5"></i> Writing</div>
+            <select id="textModel" class="input-field" onchange="appState.settings.textModel=this.value; markModified();">
             <optgroup label="Anthropic">
-              <option value="claude-opus-4-8">Claude Opus 4.8</option>
-              <option value="claude-sonnet-5">Claude Sonnet 5</option>
-              <option value="claude-sonnet-4-6">Claude Sonnet 4.6</option>
+              <option value="claude-fable-5-1">Claude Fable 5.1</option>
+              <option value="claude-opus-5-5">Claude Opus 5.5</option>
+              <option value="claude-sonnet-5-5">Claude Sonnet 5.5</option>
               <option value="claude-haiku-4-5">Claude Haiku 4.5</option>
             </optgroup>
             <optgroup label="OpenAI">
-              <option value="gpt-5.5">GPT-5.5</option>
-              <option value="gpt-5.4">GPT-5.4</option>
+              <option value="gpt-6-astra">GPT-6 Astra</option>
+              <option value="gpt-6.1-sol">GPT-6.1 Sol</option>
+              <option value="gpt-6-sol">GPT-6 Sol</option>
+              <option value="gpt-6-luna">GPT-6 Luna</option>
             </optgroup>
             <optgroup label="Google">
               <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro</option>
-              <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
+            </optgroup>
+            <optgroup label="Kie.ai">
+              <option value="kie/claude-fable-5">Claude Fable 5 (Kie.ai)</option>
+              <option value="kie/claude-opus-5-5">Claude Opus 5.5 (Kie.ai)</option>
+              <option value="kie/claude-sonnet-5-5">Claude Sonnet 5.5 (Kie.ai)</option>
+              <option value="kie/claude-haiku-4-5">Claude Haiku 4.5 (Kie.ai)</option>
+              <option value="kie/gpt-6-astra">GPT-6 Astra (Kie.ai)</option>
+              <option value="kie/gpt-6-1-sol">GPT-6.1 Sol (Kie.ai)</option>
+              <option value="kie/gpt-6-sol">GPT-6 Sol (Kie.ai)</option>
+              <option value="kie/gpt-6-luna">GPT-6 Luna (Kie.ai)</option>
+              <option value="kie/gemini-3-1-pro">Gemini 3.1 Pro (Kie.ai)</option>
+              <option value="kie/gemini-3-8-flash">Gemini 3.8 Flash (Kie.ai)</option>
             </optgroup>
           </select>
+            <div class="seg" id="textSpeedSeg">
+              <button data-speed="fast" onclick="setTextSpeed('fast')">Fast</button>
+              <button data-speed="balanced" onclick="setTextSpeed('balanced')">Balanced</button>
+              <button data-speed="quality" onclick="setTextSpeed('quality')">Quality</button>
+            </div>
+            <p class="set-hint" id="textSpeedHint"></p>
+          </div>
 
-          <label class="field-label">Image Model</label>
-          <div class="flex flex-col gap-1.5 mb-2">
-            <label class="toggle-card" data-tool="gpt-image-2">
-              <input type="radio" name="imageTool" value="gpt-image-2" onchange="selectImageTool('gpt-image-2')" checked>
-              <span><i data-lucide="image" class="w-3.5 h-3.5 inline-block align-middle" style="display:inline-block;vertical-align:middle;margin-right:4px"></i> GPT Image 2 <span class="text-muted">— OpenAI</span></span>
-            </label>
-            <label class="toggle-card" data-tool="nanobanana-pro">
-              <input type="radio" name="imageTool" value="nanobanana-pro" onchange="selectImageTool('nanobanana-pro')">
-              <span><i data-lucide="zap" class="w-3.5 h-3.5 inline-block align-middle" style="display:inline-block;vertical-align:middle;margin-right:4px"></i> Nano Banana Pro <span class="text-muted">— Gemini</span></span>
-            </label>
-            <label class="toggle-card" data-tool="nanobanana-2">
-              <input type="radio" name="imageTool" value="nanobanana-2" onchange="selectImageTool('nanobanana-2')">
-              <span><i data-lucide="zap" class="w-3.5 h-3.5 inline-block align-middle" style="display:inline-block;vertical-align:middle;margin-right:4px"></i> Nano Banana 2 <span class="text-muted">— Gemini</span></span>
-            </label>
+          <div class="panel-divider"></div>
+
+          <div class="set-section">
+            <div class="set-section-title"><i data-lucide="image" class="w-3.5 h-3.5"></i> Images</div>
+            <select id="imageToolSelect" class="input-field" onchange="selectImageTool(this.value)">
+            <optgroup label="OpenAI">
+              <option value="gpt-image-flare">GPT Image 2.5 Flare</option>
+              <option value="gpt-image-sunburst">GPT Image 2.5 Sunburst</option>
+            </optgroup>
+            <optgroup label="Google">
+              <option value="nanobanana-pro">Nano Banana Pro</option>
+              <option value="nanobanana-2-1">Nano Banana 2.1</option>
+            </optgroup>
+            <optgroup label="Kie.ai">
+              <option value="kie-gpt-flare">GPT Image 2.5 Flare</option>
+              <option value="kie-gpt-sunburst">GPT Image 2.5 Sunburst</option>
+              <option value="kie-nanobanana-pro">Nano Banana Pro</option>
+              <option value="kie-nanobanana-2">Nano Banana 2</option>
+            </optgroup>
+            </select>
+            <p class="set-hint" id="imageToolHint"></p>
+            <div class="set-hint" style="margin-top:4px">Quality <span style="opacity:.8">(lower = faster; OpenAI images)</span></div>
+            <div class="seg" id="imageQualitySeg">
+              <button data-imgq="low" onclick="setSceneImageQuality('low')">Low</button>
+              <button data-imgq="medium" onclick="setSceneImageQuality('medium')">Medium</button>
+              <button data-imgq="high" onclick="setSceneImageQuality('high')">High</button>
+            </div>
           </div>
         </div>
       </div>
@@ -2634,90 +2674,6 @@ select.input-field{ appearance:none; }
 </div>
 
 <script>
-// ====== NOVELFORGE ACCESS LOCK ======
-const VALID_HASH = '54b034e1ccf0c2549a39e802c57b119b74691a57ee39c676bab9fcea26133e7d';
-const LOCK_STORAGE_KEY = 'emaki_master_unlocked';
-const MASTER_MODE = true;
-
-async function computeSHA256(str) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(str);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-async function attemptUnlock() {
-  const input = document.getElementById('accessCodeInput');
-  const btn = document.getElementById('unlockBtn');
-  const errorEl = document.getElementById('lockError');
-  const code = (input.value || '').trim().toUpperCase();
-
-  if (!code) {
-    input.classList.remove('shake');
-    void input.offsetWidth;
-    input.classList.add('shake');
-    input.focus();
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="lock-spinner"></span> Verifying...';
-  errorEl.style.display = 'none';
-
-  try {
-    const hash = await computeSHA256(code);
-    if (hash === VALID_HASH) {
-      localStorage.setItem(LOCK_STORAGE_KEY, 'true');
-      btn.innerHTML = '✅ Access Granted!';
-      btn.style.background = 'linear-gradient(135deg, #059669, #047857)';
-      btn.style.boxShadow = '0 4px 20px rgba(5,150,105,0.4)';
-      setTimeout(() => {
-        document.getElementById('lockScreen').style.display = 'none';
-        const appRoot = document.getElementById('appRoot');
-        if (appRoot) appRoot.style.display = 'block';
-        if (typeof initializeApp === 'function') initializeApp();
-        else if (typeof init === 'function') init();
-      }, 900);
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Unlock Master Edition';
-      input.value = '';
-      input.classList.remove('shake');
-      void input.offsetWidth;
-      input.classList.add('shake');
-      errorEl.style.display = 'block';
-      setTimeout(() => input.focus(), 100);
-    }
-  } catch(e) {
-    btn.disabled = false;
-    btn.innerHTML = 'Unlock Master Edition';
-    errorEl.textContent = '⚠️ Verification error. Please try again.';
-    errorEl.style.display = 'block';
-  }
-}
-
-function checkLockStatus() {
-  const isUnlocked = localStorage.getItem(LOCK_STORAGE_KEY) === 'true';
-  const lockScreen = document.getElementById('lockScreen');
-  const appRoot = document.getElementById('appRoot');
-  if (isUnlocked) {
-    if (lockScreen) lockScreen.style.display = 'none';
-    if (appRoot) appRoot.style.display = 'block';
-  } else {
-    if (lockScreen) lockScreen.style.display = 'flex';
-    if (appRoot) appRoot.style.display = 'none';
-    setTimeout(() => {
-      const input = document.getElementById('accessCodeInput');
-      if (input) {
-        input.focus();
-        input.addEventListener('input', () => { input.value = input.value.toUpperCase(); });
-        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
-      }
-    }, 150);
-  }
-}
-// ====== END ACCESS LOCK ======
 
 /* ====================== MASTER EDITION GATING ====================== */
 // Story length stays curated in Master — full custom range is a Titan-tier system.
@@ -2965,6 +2921,9 @@ function masterSanitizeProjectPayload(obj){
 }
 /* ====================== END MASTER EDITION GATING ====================== */
 
+// Edition flag (feature limits for this tier)
+const MASTER_MODE = true;
+
 /* ====================== STATE ====================== */
 const RICH_STYLE_PREFIXES = {
   'cinematic': 'Masterpiece cinematic graphic novel. Insanely hyper-detailed 8K resolution textures. Heavy blockbuster chiaroscuro lighting with deep inky shadows pierced by blinding cinematic light. Oppressive awe-inspiring scale and atmosphere. Volumetric fog, dust motes, and particle effects throughout. Professional comic book inking fused with high-end cinematic rendering.',
@@ -3031,10 +2990,11 @@ const appState = {
   specialInstructions: "",
   synopsis: "",
   scenes: [],
-  apiKeys: { anthropic: "", openai: "", gemini: "" },
+  apiKeys: { anthropic: "", openai: "", gemini: "", kie: "" },
   settings: {
     textModel: getDefaultTextModel(),
-    imageTool: "gpt-image-2",
+    textSpeed: 'fast',
+    imageTool: "gpt-image-flare",
     imageSize: "1024x1536",
     imageQuality: "medium",
     richStylePreset: 'cinematic',
@@ -3673,32 +3633,200 @@ function applyVolumeSplits(splits){
 }
 
 /* ====================== AI PROVIDERS ====================== */
-const PROVIDER_LABELS = { anthropic: 'Anthropic', openai: 'OpenAI', gemini: 'Gemini' };
+const PROVIDER_LABELS = { anthropic: 'Anthropic', openai: 'OpenAI', gemini: 'Gemini', kie: 'Kie.ai' };
 
 const TEXT_MODELS = [
-  { id:'claude-opus-4-8',   provider:'anthropic', label:'Claude Opus 4.8 (Anthropic)' },
-  { id:'claude-sonnet-5',   provider:'anthropic', label:'Claude Sonnet 5 (Anthropic)' },
-  { id:'claude-sonnet-4-6', provider:'anthropic', label:'Claude Sonnet 4.6 (Anthropic)' },
+  { id:'claude-fable-5-1',  provider:'anthropic', label:'Claude Fable 5.1 (Anthropic)' },
+  { id:'claude-opus-5-5',   provider:'anthropic', label:'Claude Opus 5.5 (Anthropic)' },
+  { id:'claude-sonnet-5-5', provider:'anthropic', label:'Claude Sonnet 5.5 (Anthropic)' },
   { id:'claude-haiku-4-5',  provider:'anthropic', label:'Claude Haiku 4.5 (Anthropic)' },
-  { id:'gpt-5.5',                  provider:'openai',    label:'GPT-5.5 (OpenAI)' },
-  { id:'gpt-5.4',                  provider:'openai',    label:'GPT-5.4 (OpenAI)' },
+  { id:'gpt-6-astra',              provider:'openai',    label:'GPT-6 Astra (OpenAI)' },
+  { id:'gpt-6.1-sol',              provider:'openai',    label:'GPT-6.1 Sol (OpenAI)' },
+  { id:'gpt-6-sol',                provider:'openai',    label:'GPT-6 Sol (OpenAI)' },
+  { id:'gpt-6-luna',               provider:'openai',    label:'GPT-6 Luna (OpenAI)' },
   { id:'gemini-3.1-pro-preview',   provider:'gemini',    label:'Gemini 3.1 Pro (Google)' },
-  { id:'gemini-3.6-flash',         provider:'gemini',    label:'Gemini 3.6 Flash (Google)' }
+  { id:'gemini-3.8-flash',         provider:'gemini',    label:'Gemini 3.8 Flash (Google)' },
+  { id:'kie/claude-fable-5',    provider:'kie', family:'claude',        model:'claude-fable-5',    label:'Claude Fable 5 (Kie.ai)' },
+  { id:'kie/claude-opus-5-5',   provider:'kie', family:'claude',        model:'claude-opus-5-5',   label:'Claude Opus 5.5 (Kie.ai)' },
+  { id:'kie/claude-sonnet-5-5', provider:'kie', family:'claude',        model:'claude-sonnet-5-5', label:'Claude Sonnet 5.5 (Kie.ai)' },
+  { id:'kie/claude-haiku-4-5',  provider:'kie', family:'claude',        model:'claude-haiku-4-5',  label:'Claude Haiku 4.5 (Kie.ai)' },
+  { id:'kie/gpt-6-astra',       provider:'kie', family:'gpt',           model:'gpt-6-astra',       label:'GPT-6 Astra (Kie.ai)' },
+  { id:'kie/gpt-6-1-sol',       provider:'kie', family:'gpt',           model:'gpt-6-1-sol',       label:'GPT-6.1 Sol (Kie.ai)' },
+  { id:'kie/gpt-6-sol',         provider:'kie', family:'gpt',           model:'gpt-6-sol',         label:'GPT-6 Sol (Kie.ai)' },
+  { id:'kie/gpt-6-luna',        provider:'kie', family:'gpt',           model:'gpt-6-luna',        label:'GPT-6 Luna (Kie.ai)' },
+  { id:'kie/gemini-3-1-pro',    provider:'kie', family:'gemini-chat',   model:'gemini-3.1-pro',    label:'Gemini 3.1 Pro (Kie.ai)' },
+  { id:'kie/gemini-3-8-flash',  provider:'kie', family:'gemini-native', model:'gemini-3-8-flash',  label:'Gemini 3.8 Flash (Kie.ai)' }
 ];
+// Kie.ai text models: one key, but each model family has its own native endpoint/format.
+// Kie's Claude endpoint has no `system` field, so the system prompt is folded into the user message.
+async function kieTextRequest(info, key, systemPrompt, userMessage, opts){
+  const base = 'https://api.kie.ai';
+  const combined = (systemPrompt ? systemPrompt + '\n\n---\n\n' : '') + userMessage + (opts.json ? '\n\nRespond with valid JSON only, no commentary.' : '');
+  const headers = { 'Content-Type':'application/json', 'Authorization':'Bearer ' + key };
+  let url, body;
+  if(info.family==='claude'){
+    url = base + '/claude/v1/messages';
+    body = { model: info.model, messages:[{ role:'user', content: combined }], max_tokens: opts.maxTokens || 4096, stream:false };
+    if(!opts._noSpeed) body.thinkingFlag = (getTextSpeed()==='quality');
+  } else if(info.family==='gpt'){
+    url = base + '/codex/v1/responses';
+    body = { model: info.model, input:[{ role:'user', content: combined }], reasoning:{ effort: opts._noSpeed ? 'medium' : TEXT_SPEED_EFFORT[getTextSpeed()] }, stream:false };
+  } else if(info.family==='gemini-native'){
+    url = base + '/gemini/v1/models/' + info.model + ':streamGenerateContent';
+    body = { stream:false, contents:[{ role:'user', parts:[{ text: combined }] }] };
+    if(!opts._noSpeed && getTextSpeed()==='fast') body.generationConfig = { thinkingConfig:{ thinkingLevel:'low' } };
+  } else { // gemini-chat (OpenAI-style)
+    url = base + '/' + info.model + '/v1/chat/completions';
+    body = { model: info.model, messages:[{ role:'user', content: combined }], stream:false, include_thoughts:false };
+    if(!opts._noSpeed && getTextSpeed()==='fast') body.reasoning_effort = 'low';
+  }
+  return fetch(url, { method:'POST', headers, body: JSON.stringify(body) });
+}
+// Returns the text, or null after toasting when Kie reports an error inside a 200 response.
+function parseKieText(info, data){
+  if(data && data.code && data.code!==200){
+    showToast('Kie.ai error: ' + (data.msg || data.code), 'error', true);
+    return null;
+  }
+  if(info.family==='claude') return (data.content||[]).filter(b=>b.type==='text').map(b=>b.text||'').join('');
+  if(info.family==='gpt'){
+    if(typeof data.output_text==='string') return data.output_text;
+    return (data.output||[]).filter(o=>o.type==='message').flatMap(o=>o.content||[]).filter(c=>c.type==='output_text').map(c=>c.text||'').join('');
+  }
+  if(info.family==='gemini-native'){
+    const chunks = Array.isArray(data) ? data : [data];
+    return chunks.flatMap(c=>(c.candidates&&c.candidates[0]&&c.candidates[0].content&&c.candidates[0].content.parts)||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');
+  }
+  return data.choices && data.choices[0] ? data.choices[0].message.content : '';
+}
+
+
 
 const IMAGE_TOOLS = [
-  { id:'gpt-image-2',    provider:'openai', model:'gpt-image-2',               emoji:'🎨', label:'ChatGPT Image 2',  desc:'OpenAI · GPT Image 2' },
-  { id:'nanobanana-pro', provider:'gemini', model:'gemini-3-pro-image-preview',  emoji:'🍌', label:'Nano Banana Pro',  desc:'Gemini · 3 Pro Image' },
-  { id:'nanobanana-2',   provider:'gemini', model:'gemini-3.1-flash-image', emoji:'🍌', label:'Nano Banana 2', desc:'Gemini · 3.1 Flash Image' }
+  { id:'gpt-image-flare',    provider:'openai', model:'gpt-image-2.5-flare',    emoji:'🎨', label:'GPT Image 2.5 Flare',    desc:'OpenAI · GPT Image 2.5 Flare' },
+  { id:'gpt-image-sunburst', provider:'openai', model:'gpt-image-2.5-sunburst', emoji:'🎨', label:'GPT Image 2.5 Sunburst', desc:'OpenAI · GPT Image 2.5 Sunburst' },
+  { id:'nanobanana-pro',     provider:'gemini', model:'gemini-3-pro-image',     emoji:'🍌', label:'Nano Banana Pro',        desc:'Gemini · 3 Pro Image' },
+  { id:'nanobanana-2-1',     provider:'gemini', model:'gemini-nano-banana-2.1', emoji:'🍌', label:'Nano Banana 2.1',        desc:'Gemini · Nano Banana 2.1' },
+  { id:'kie-gpt-flare',      provider:'kie', model:'gpt-image-2-5-flare-text-to-image',    emoji:'🎨', label:'GPT Image 2.5 Flare (Kie.ai)',    desc:'Kie.ai · GPT Image 2.5 Flare' },
+  { id:'kie-gpt-sunburst',   provider:'kie', model:'gpt-image-2-5-sunburst-text-to-image', emoji:'🎨', label:'GPT Image 2.5 Sunburst (Kie.ai)', desc:'Kie.ai · GPT Image 2.5 Sunburst' },
+  { id:'kie-nanobanana-pro', provider:'kie', model:'nano-banana-pro',           emoji:'🍌', label:'Nano Banana Pro (Kie.ai)', desc:'Kie.ai · Nano Banana Pro' },
+  { id:'kie-nanobanana-2',   provider:'kie', model:'nano-banana-2',             emoji:'🍌', label:'Nano Banana 2 (Kie.ai)',   desc:'Kie.ai · Nano Banana 2' }
 ];
 
+// Kie.ai image generation: async task API (createTask -> poll recordInfo -> download result URL).
+const KIE_BASE = 'https://api.kie.ai/api/v1';
+async function generateImageViaKie(tool, key, prompt){
+  const aspectMap = { '1024x1024':'1:1', '1024x1536':'2:3', '1536x1024':'3:2', '1024x1792':'9:16', '1792x1024':'16:9' };
+  const aspect = aspectMap[appState.settings.imageSize] || '2:3';
+  const input = { prompt, aspect_ratio: aspect, resolution: '1K' };
+  if(!tool.model.startsWith('gpt-image')) input.output_format = 'png';
+  const headers = { 'Content-Type':'application/json', 'Authorization':'Bearer ' + key };
+  try{
+    const cr = await fetch(KIE_BASE + '/jobs/createTask', { method:'POST', headers, body: JSON.stringify({ model: tool.model, input }) });
+    const cj = await cr.json().catch(()=>({}));
+    if(cr.status===401 || cj.code===401){ showToast('Invalid Kie.ai API key.', 'error', true); return null; }
+    if(cj.code===402){ showToast('Kie.ai: insufficient credits.', 'error', true); return null; }
+    const taskId = cj.data && cj.data.taskId;
+    if(cj.code!==200 || !taskId){ showToast('Kie.ai error: ' + (cj.msg || cr.status), 'error', true); return null; }
+    const deadline = Date.now() + 5*60*1000;
+    let delay = 2000;
+    while(Date.now() < deadline){
+      await new Promise(r=>setTimeout(r, delay));
+      delay = Math.min(delay + 500, 4000);
+      const pr = await fetch(KIE_BASE + '/jobs/recordInfo?taskId=' + encodeURIComponent(taskId), { headers:{ 'Authorization':'Bearer ' + key } });
+      const pj = await pr.json().catch(()=>({}));
+      const d = pj.data || {};
+      if(d.state==='fail'){ showToast('Kie.ai generation failed: ' + (d.failMsg || 'unknown error'), 'error', true); return null; }
+      if(d.state==='success'){
+        let url = null;
+        try{ const r = JSON.parse(d.resultJson || '{}'); url = (r.resultUrls && r.resultUrls[0]) || null; }catch(e){}
+        if(!url){ showToast('Kie.ai returned no image.', 'error', true); return null; }
+        try{
+          const blob = await (await fetch(url)).blob();
+          return await new Promise((resolve,reject)=>{ const fr = new FileReader(); fr.onload = e=>resolve(e.target.result); fr.onerror = reject; fr.readAsDataURL(blob); });
+        }catch(e){ return url; } // download blocked by CORS: fall back to the hosted URL
+      }
+    }
+    showToast('Kie.ai timed out waiting for the image.', 'error', true);
+    return null;
+  }catch(e){
+    showToast('Image generation failed. Check your connection.', 'error', true);
+    return null;
+  }
+}
+// Text speed: how much the model "thinks" before answering. Default 'fast' (low reasoning).
+const TEXT_SPEED_EFFORT = { fast:'low', balanced:'medium', quality:'high' };
+function getTextSpeed(){
+  const v = appState.settings && appState.settings.textSpeed;
+  return TEXT_SPEED_EFFORT[v] ? v : 'fast';
+}
+// Image batches: OpenAI rate-limits harder, Gemini/Kie take more parallel jobs.
+
+const TEXT_SPEED_HINTS = {
+  fast:     'Minimal reasoning. Quickest drafts (default).',
+  balanced: 'Moderate reasoning. A bit slower, a bit more careful.',
+  quality:  'Deep reasoning. Slowest, best for polishing.'
+};
+function syncTextSpeedUI(){
+  const v = getTextSpeed();
+  document.querySelectorAll('#textSpeedSeg button').forEach(b=>b.classList.toggle('active', b.dataset.speed===v));
+  const h = document.getElementById('textSpeedHint'); if(h) h.textContent = TEXT_SPEED_HINTS[v];
+}
+function setTextSpeed(v){
+  appState.settings.textSpeed = v;
+  markModified();
+  syncTextSpeedUI();
+}
+const IMAGE_TOOL_HINTS = {
+  'gpt-image-flare':'Fast and high quality. Recommended.',
+  'gpt-image-sunburst':'More detailed, slower to generate.',
+  'nanobanana-pro':'Top fidelity, slower.',
+  'nanobanana-2-1':'Fastest Gemini option.',
+  'kie-gpt-flare':'Fast and high quality, billed on your Kie credits.',
+  'kie-gpt-sunburst':'More detailed, slower. Kie credits.',
+  'kie-nanobanana-pro':'Top fidelity, slower. Kie credits.',
+  'kie-nanobanana-2':'Fast. Kie credits.'
+};
+function syncImageToolUI(){
+  const id = getImageToolInfo().id;
+  const sel = document.getElementById('imageToolSelect'); if(sel) sel.value = id;
+  const h = document.getElementById('imageToolHint'); if(h) h.textContent = IMAGE_TOOL_HINTS[id] || '';
+  syncImageOptionsUI();
+}
+
+/* ---- Generate dropdown ---- */
+function toggleGenMenu(ev){
+  if(ev) ev.stopPropagation();
+  const m = document.getElementById('genMenu');
+  if(m) m.classList.toggle('open');
+}
+function runGenMenu(fnName){
+  const m = document.getElementById('genMenu');
+  if(m) m.classList.remove('open');
+  if(typeof window[fnName]==='function') window[fnName]();
+}
+document.addEventListener('click', e=>{
+  const m = document.getElementById('genMenu');
+  if(m && m.classList.contains('open') && !e.target.closest('.gen-menu-wrap')) m.classList.remove('open');
+});
+
+/* ---- Image quality / format: one source of truth, synced across Settings and the scene editor ---- */
+function syncImageOptionsUI(){
+  const q = appState.settings.imageQuality || 'medium', sz = appState.settings.imageSize;
+  document.querySelectorAll('[data-imgq]').forEach(b=>b.classList.toggle('active', b.dataset.imgq===q));
+  document.querySelectorAll('[data-imgsz]').forEach(b=>b.classList.toggle('active', b.dataset.imgsz===sz));
+}
+function getImageConcurrency(){
+  return getImageToolInfo().provider==='openai' ? 6 : 8;
+}
+
 function getTextModelInfo(){
-  return TEXT_MODELS.find(m=>m.id===appState.settings.textModel) || TEXT_MODELS[1];
+  return TEXT_MODELS.find(m=>m.id===appState.settings.textModel) || TEXT_MODELS[2];
 }
 
 // Best default for new sessions/stories — kept as one place to bump when the model list changes.
 function getDefaultTextModel(){
-  return 'claude-sonnet-5';
+  return 'claude-sonnet-5-5';
 }
 
 // Fix only invalid/missing model ids. Never touch an already-valid saved choice.
@@ -3706,6 +3834,8 @@ function normalizeSelectedTextModel(){
   if(!appState.settings) return;
   const cur = appState.settings.textModel;
   if(!TEXT_MODELS.some(m => m.id === cur)) appState.settings.textModel = getDefaultTextModel();
+  const tool = appState.settings.imageTool;
+  if(!IMAGE_TOOLS.some(t => t.id === tool)) appState.settings.imageTool = IMAGE_TOOLS[0].id;
 }
 function getImageToolInfo(){
   return IMAGE_TOOLS.find(t=>t.id===appState.settings.imageTool) || IMAGE_TOOLS[0];
@@ -4210,9 +4340,9 @@ function getFastGenerationModel(){
   // "fast" model IDs (OpenAI/Gemini) can't be confirmed against a live model catalog from
   // here, and guessing one causes a silent HTTP 404 that overrides the user's own selection.
   // If the user's key/selection isn't Anthropic, just keep their selected model unchanged.
-  const fastFast = ['claude-haiku-4-5'];
+  const fastFast = ['claude-haiku-4-5','kie/claude-haiku-4-5'];
   if(fastFast.includes(sel)) return sel;
-  const preferred = ['claude-haiku-4-5','claude-sonnet-4-6'];
+  const preferred = ['claude-haiku-4-5','kie/claude-haiku-4-5','claude-sonnet-5-5','kie/claude-sonnet-5-5'];
   for(const id of preferred){
     if(TEXT_MODELS.some(m => m.id===id && (appState.apiKeys[m.provider]||'').trim())) return id;
   }
@@ -4782,7 +4912,7 @@ function payloadTemplateToLegacyPreviewModel(t){
   };
 }
 async function generateStoryTemplates(){
-  if(!appState.apiKeys.anthropic && !appState.apiKeys.openai && !appState.apiKeys.gemini){
+  if(!appState.apiKeys.anthropic && !appState.apiKeys.openai && !appState.apiKeys.gemini && !appState.apiKeys.kie){
     showToast('Please enter an API key first (sidebar > API).', 'error');
     return;
   }
@@ -5270,7 +5400,7 @@ No placeholder text.`;
 }
 
 async function generateCharacterPacks(){
-  if(!appState.apiKeys.anthropic && !appState.apiKeys.openai && !appState.apiKeys.gemini){
+  if(!appState.apiKeys.anthropic && !appState.apiKeys.openai && !appState.apiKeys.gemini && !appState.apiKeys.kie){
     showToast('Please enter an API key first (sidebar > API).', 'error');
     return;
   }
@@ -5692,7 +5822,7 @@ async function clearStoryImages(storyId){
 
 /* ====================== API KEY MGMT ====================== */
 function loadSavedKeys(){
-  ['anthropic','openai','gemini'].forEach(provider=>{
+  ['anthropic','openai','gemini','kie'].forEach(provider=>{
     const saved = localStorage.getItem(`emaki_key_${provider}`);
     if(saved){
       appState.apiKeys[provider] = saved;
@@ -5700,12 +5830,12 @@ function loadSavedKeys(){
       if(input) input.value = saved;
     }
     const status = localStorage.getItem(`emaki_status_${provider}`);
-    if(status) updateApiStatusDot(provider, status);
+    updateApiStatusDot(provider, status || 'idle');
   });
 }
 
 function clearSavedKeys(){
-  ['anthropic','openai','gemini'].forEach(provider=>{
+  ['anthropic','openai','gemini','kie'].forEach(provider=>{
     localStorage.removeItem(`emaki_key_${provider}`);
     localStorage.removeItem(`emaki_status_${provider}`);
     appState.apiKeys[provider] = '';
@@ -5730,7 +5860,7 @@ function updateApiStatusDot(provider, state){
   dot.className = 'status-dot';
   if(state==='ok'){ dot.classList.add('ok'); label.textContent='Connected'; }
   else if(state==='fail'){ dot.classList.add('fail'); label.textContent='Invalid key'; }
-  else { label.textContent='Not tested'; }
+  else { label.textContent = (appState.apiKeys && (appState.apiKeys[provider]||'').trim()) ? 'Not tested' : 'Not set'; }
   try { localStorage.setItem(`emaki_status_${provider}`, state); } catch(e){}
 }
 
@@ -5755,6 +5885,10 @@ async function testConnection(provider){
           'anthropic-dangerous-direct-browser-access': 'true'
         }
       });
+    } else if(provider==='kie'){
+      const kr = await fetch('https://api.kie.ai/api/v1/chat/credit', { headers: { 'Authorization': `Bearer ${key}` } });
+      const kj = await kr.json().catch(()=>({}));
+      res = { ok: kj.code===200, status: kj.code || kr.status };
     } else {
       res = await fetch('https://generativelanguage.googleapis.com/v1beta/models', {
         headers: { 'x-goog-api-key': key }
@@ -5775,14 +5909,13 @@ async function testConnection(provider){
     showToast('Connection failed. Check your internet connection.', 'error');
   }finally{
     btn.disabled = false;
-    content.innerHTML = '<i data-lucide="plug-zap" class="w-4 h-4 inline"></i> Test Connection';
-    lucide.createIcons();
+    content.textContent = 'Test';
   }
 }
 
 function selectImageTool(tool){
   appState.settings.imageTool = tool;
-  document.querySelectorAll('.toggle-card[data-tool]').forEach(c=>c.classList.toggle('active', c.dataset.tool===tool));
+  syncImageToolUI();
   markModified();
   if(appState.activeTab==='editor') renderEditorTab();
 }
@@ -5795,7 +5928,7 @@ function saveProject(){
     includeImages = confirm('Include generated/uploaded images in the saved file? This will create a larger file.\n\nOK = include images, Cancel = exclude images.');
   }
   const data = JSON.parse(JSON.stringify(appState));
-  data.apiKeys = { anthropic: "", openai: "", gemini: "" };
+  data.apiKeys = { anthropic: "", openai: "", gemini: "", kie: "" };
   if(!includeImages){
     data.scenes.forEach(s=>{ s.imageData = null; });
   }
@@ -5875,9 +6008,8 @@ function slugify(str){
 function hydrateFormFromState(){
   document.getElementById('titleDisplay').textContent = appState.title;
   document.getElementById('textModel').value = appState.settings.textModel;
-  const tool = appState.settings.imageTool || 'gpt-image-2';
-  document.querySelector(`input[name="imageTool"][value="${tool}"]`).checked = true;
-  document.querySelectorAll('.toggle-card[data-tool]').forEach(c=>c.classList.toggle('active', c.dataset.tool===tool));
+  syncTextSpeedUI();
+  syncImageToolUI();
   const nfInput = document.getElementById('nfArtStyleCustomInput');
   if (nfInput) nfInput.value = appState.novelArtStyleData || '';
 }
@@ -8537,7 +8669,9 @@ async function callTextModel(systemPrompt, userMessage, opts={}){
 
   try{
     let res;
-    if(provider==='openai'){
+    if(provider==='kie'){
+      res = await kieTextRequest(info, key, systemPrompt, userMessage, opts);
+    } else if(provider==='openai'){
       const body = {
         model: info.id,
         messages: [
@@ -8546,6 +8680,7 @@ async function callTextModel(systemPrompt, userMessage, opts={}){
         ]
       };
       if(opts.json) body.response_format = { type:'json_object' };
+      if(!opts._noSpeed) body.reasoning_effort = TEXT_SPEED_EFFORT[getTextSpeed()];
       res = await fetch('https://api.openai.com/v1/chat/completions', {
         method:'POST',
         headers:{ 'Content-Type':'application/json', 'Authorization': `Bearer ${key}` },
@@ -8563,14 +8698,17 @@ async function callTextModel(systemPrompt, userMessage, opts={}){
         body: JSON.stringify({
           model: info.id,
           max_tokens: opts.maxTokens || 4096,
-          temperature: opts.temperature!==undefined ? opts.temperature : 1,
+          ...(info.id==='claude-haiku-4-5' ? { temperature: opts.temperature!==undefined ? Math.min(opts.temperature,1) : 1 } : {}), // Opus/Sonnet/Fable 5.x reject non-default sampling params
           system: systemPrompt,
-          messages: [ { role:'user', content: userMessage } ]
+          messages: [ { role:'user', content: userMessage } ],
+          ...((!opts._noSpeed && info.id!=='claude-haiku-4-5') ? { output_config:{ effort: TEXT_SPEED_EFFORT[getTextSpeed()] } } : {}),
+          ...((!opts._noSpeed && info.id==='claude-sonnet-5-5' && getTextSpeed()==='fast') ? { thinking:{ type:'between_tools' } } : {})
         })
       });
     } else { // gemini
       const generationConfig = { temperature: opts.temperature!==undefined ? opts.temperature : 0.9 };
       if(opts.json) generationConfig.responseMimeType = 'application/json';
+      if(!opts._noSpeed && getTextSpeed()==='fast') generationConfig.thinkingConfig = { thinkingLevel:'low' };
       res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${info.id}:generateContent`, {
         method:'POST',
         headers:{ 'Content-Type':'application/json', 'x-goog-api-key': key },
@@ -8582,6 +8720,10 @@ async function callTextModel(systemPrompt, userMessage, opts={}){
       });
     }
 
+    if(res.status===400 && !opts._noSpeed){
+      // Speed params rejected by this model/endpoint: retry once without them.
+      return callTextModel(systemPrompt, userMessage, { ...opts, _noSpeed:true });
+    }
     if(res.status===401 || res.status===403){
       showToast(`Invalid ${PROVIDER_LABELS[provider]} API key. Please check it in the sidebar.`, 'error', true);
       return null;
@@ -8616,8 +8758,9 @@ async function callTextModel(systemPrompt, userMessage, opts={}){
     }
 
     const data = await res.json();
+    if(provider==='kie') return parseKieText(info, data);
     if(provider==='openai') return data.choices[0].message.content;
-    if(provider==='anthropic') return data.content.map(b=>b.text||'').join('');
+    if(provider==='anthropic') return data.content.filter(b=>b.type==='text').map(b=>b.text||'').join('');
     return (data.candidates[0].content.parts||[]).map(p=>p.text||'').join('');
 
   }catch(e){
@@ -9602,9 +9745,10 @@ function detectPaidPromisesInChunk(chunkScenes){
    Never switches provider (which would need an untested key), only ever strengthens
    within the provider the user already configured — transparent via titan.preferredModel. */
 const TITAN_MODEL_STRENGTH_ORDER = {
-  anthropic: ['claude-opus-4-8','claude-sonnet-5','claude-sonnet-4-6','claude-haiku-4-5'],
-  openai:    ['gpt-5.5','gpt-5.4'],
-  gemini:    ['gemini-3.1-pro-preview','gemini-3.6-flash']
+  anthropic: ['claude-fable-5-1','claude-opus-5-5','claude-sonnet-5-5','claude-haiku-4-5'],
+  openai:    ['gpt-6-astra','gpt-6.1-sol','gpt-6-sol','gpt-6-luna'],
+  gemini:    ['gemini-3.1-pro-preview','gemini-3.8-flash'],
+  kie:       ['kie/claude-fable-5','kie/claude-opus-5-5','kie/gpt-6-astra','kie/claude-sonnet-5-5','kie/gemini-3-1-pro','kie/gpt-6-1-sol','kie/gpt-6-sol','kie/gemini-3-8-flash','kie/gpt-6-luna','kie/claude-haiku-4-5']
 };
 function getTitanPreferredModel(){
   const current = getTextModelInfo();
@@ -11625,16 +11769,23 @@ function renderEditorTab(){
     ${renderGlobalBubblePanel()}
     <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
       <div class="flex items-center gap-2 flex-wrap">
-        <button onclick="batchGenerateKeyImages()" class="btn-secondary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5" title="Generates only the most important scenes (opening, midpoint, climax, etc.) for a fast visual preview of the whole story"><i data-lucide="sparkles" class="w-4 h-4"></i> Generate Preview Images</button>
-        <button onclick="batchGenerateImagesForCurrentVolume()" class="btn-secondary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5" title="Generates images only for scenes inside the currently active volume (${escapeAttr(getActiveVolume()?.title||'this volume')})"><i data-lucide="layers" class="w-4 h-4"></i> Generate Current Volume Images</button>
-        <button onclick="batchGenerateImages()" class="btn-primary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5"><i data-lucide="image" class="w-4 h-4"></i> Generate All Images</button>
-        <button onclick="batchGenerateDialogues()" class="btn-primary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5" style="background:linear-gradient(135deg,#b23a2b,#7f2218);"><i data-lucide="message-square" class="w-4 h-4"></i> Generate All Dialogues</button>
+        <div class="gen-menu-wrap">
+          <button id="genMenuBtn" onclick="toggleGenMenu(event)" title="Batch generation for the whole story" class="btn-primary rounded-lg px-4 py-2 text-sm font-bold flex items-center gap-2"><i data-lucide="wand-sparkles" class="w-4 h-4"></i> Generate All <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+          <div class="gen-menu" id="genMenu">
+            <div class="gen-menu-label">Whole story · Images</div>
+            <button class="gen-menu-item" onclick="runGenMenu('batchGenerateKeyImages')"><i data-lucide="sparkles" class="w-4 h-4"></i><span><b>Preview images</b><small>Key scenes only: a fast look at the whole story</small></span></button>
+            <button class="gen-menu-item" onclick="runGenMenu('batchGenerateImagesForCurrentVolume')"><i data-lucide="layers" class="w-4 h-4"></i><span><b>This volume</b><small>Scenes in "${escapeHtml(getActiveVolume()?.title||'the selected volume')}"</small></span></button>
+            <button class="gen-menu-item" onclick="runGenMenu('batchGenerateImages')"><i data-lucide="image" class="w-4 h-4"></i><span><b>All images</b><small>Every scene that has no image yet</small></span></button>
+            <div class="gen-menu-sep"></div>
+            <div class="gen-menu-label">Whole story · Text</div>
+            <button class="gen-menu-item" onclick="runGenMenu('batchGenerateDialogues')"><i data-lucide="message-square" class="w-4 h-4"></i><span><b>All dialogues</b><small>Speech bubbles for every scene</small></span></button>
+          </div>
+        </div>
         <button onclick="openComicReader()" class="btn-secondary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5"><i data-lucide="book-open" class="w-4 h-4"></i> Read</button>
         <button onclick="openBatchImportModal()" class="btn-secondary rounded-lg px-3 py-2 text-sm font-bold flex items-center gap-1.5"><i data-lucide="download" class="w-4 h-4"></i> Import</button>
       </div>
       <button class="shortcut-help-btn" onclick="showKeyboardShortcutsModal()" title="Keyboard shortcuts">?</button>
     </div>
-    <div class="text-xs text-muted mb-3" style="margin-top:-4px;">Preview Images: generates a small set of important story moments first. This Volume: generates images only for scenes in "${escapeHtml(getActiveVolume()?.title||'the selected volume')}".</div>
     <div class="flex gap-4" style="align-items:flex-start;">
       <div class="w-[260px] flex-shrink-0">
         <div class="flex items-center justify-between mb-2">
@@ -11776,7 +11927,12 @@ function getSceneCoherenceStatus(scene){
   return '⚠️';
 }
 
-function renderSceneList(){
+function renderSceneList(...args){
+  const r = renderSceneListBase.apply(this, args);
+  imageGenBusy.forEach(k=>{ if(typeof k==='number'){ const c=document.querySelector(`#sceneList .scene-card[data-index="${k}"]`); if(c) c.classList.add('img-generating'); } });
+  return r;
+}
+function renderSceneListBase(){
   const list = document.getElementById('sceneList');
   list.innerHTML = appState.scenes.map((sc,i)=>{
     const hasImage = !!sc.imageData;
@@ -12250,6 +12406,7 @@ async function generateSceneImageSilent(idx){
     ? (scene.chapterImagePrompt || scene.chapterSummary || scene.description || '').trim()
     : scene.image_prompt.trim();
   if(!scene || !hasPrompt) return { success:false, error:'No image prompt' };
+  setSceneImageBusy(idx, true);
   try{
     const imageData = await retryWithBackoff(() => callImageAPI(scene, buildImagePromptForScene(scene, idx)));
     if(imageData){
@@ -12261,6 +12418,8 @@ async function generateSceneImageSilent(idx){
     return { success:false, error:'No data returned' };
   }catch(e){
     return { success:false, error: e.message || 'Unknown error' };
+  }finally{
+    setSceneImageBusy(idx, false);
   }
 }
 
@@ -12433,11 +12592,11 @@ async function batchGenerateImages(){
   });
   if(!targets.length){ showToast('All scenes already have images (or no prompt set).', 'info'); return; }
   maybeSuggestFasterImageQuality();
-  const modal = showBatchModal('Generating Images… (6 at a time)', targets.length);
+  const modal = showBatchModal('Generating Images… (parallel)', targets.length);
   let done=0, failed=0;
   const _batchStart = Date.now();
   let _batchDone = 0;
-  await runConcurrent(targets, 6, async ({s,i}) => {
+  await runConcurrent(targets, getImageConcurrency(), async ({s,i}) => {
     if(modal.isCancelled()) return;
     const result = await generateSceneImageSilent(i);
     done++;
@@ -12471,11 +12630,11 @@ async function batchGenerateKeyImages(){
   const targets = getSceneTargetsFromIndexes(getKeySceneIndexes());
   if(!targets.length){ showToast('Key scenes already have images (or no prompt set).', 'info'); return; }
   maybeSuggestFasterImageQuality();
-  const modal = showBatchModal('Generating Key Images… (6 at a time)', targets.length);
+  const modal = showBatchModal('Generating Key Images… (parallel)', targets.length);
   let done=0, failed=0;
   const _batchStart = Date.now();
   let _batchDone = 0;
-  await runConcurrent(targets, 6, async ({s,i}) => {
+  await runConcurrent(targets, getImageConcurrency(), async ({s,i}) => {
     if(modal.isCancelled()) return;
     const result = await generateSceneImageSilent(i);
     done++;
@@ -12510,11 +12669,11 @@ async function batchGenerateImagesForCurrentVolume(){
   const targets = getSceneTargetsFromIndexes(indexes);
   if(!targets.length){ showToast('This volume already has images (or no prompt set).', 'info'); return; }
   maybeSuggestFasterImageQuality();
-  const modal = showBatchModal('Generating Volume Images… (6 at a time)', targets.length);
+  const modal = showBatchModal('Generating Volume Images… (parallel)', targets.length);
   let done=0, failed=0;
   const _batchStart = Date.now();
   let _batchDone = 0;
-  await runConcurrent(targets, 6, async ({s,i}) => {
+  await runConcurrent(targets, getImageConcurrency(), async ({s,i}) => {
     if(modal.isCancelled()) return;
     const result = await generateSceneImageSilent(i);
     done++;
@@ -12686,7 +12845,7 @@ function renderSceneImageColumn(idx){
       </label>
       <div class="grid grid-cols-3 gap-2">
         ${IMAGE_SIZE_OPTIONS.map(s=>`
-          <button onclick="setSceneImageSize('${s.value}', this)"
+          <button onclick="setSceneImageSize('${s.value}', this)" data-imgsz="${s.value}"
             class="btn-secondary rounded-lg py-2 text-xs font-semibold text-center ${appState.settings.imageSize===s.value?'active':''}"
             title="${s.label}">
             <i data-lucide="${s.icon}" class="w-3.5 h-3.5 mx-auto mb-0.5" style="display:block"></i>
@@ -12699,15 +12858,15 @@ function renderSceneImageColumn(idx){
       </label>
       <div class="grid grid-cols-3 gap-2">
         ${[{v:'low',l:'Low · Fastest'},{v:'medium',l:'Medium'},{v:'high',l:'High · Slow'}].map(q=>`
-          <button onclick="setSceneImageQuality('${q.v}', this)"
+          <button onclick="setSceneImageQuality('${q.v}', this)" data-imgq="${q.v}"
             class="btn-secondary rounded-lg py-2 text-xs font-semibold text-center ${(appState.settings.imageQuality||'medium')===q.v?'active':''}"
             title="${q.l}">${q.l}</button>`).join('')}
       </div>
     </div>
     <div class="grid grid-cols-2 gap-2 mb-3">
       <div class="flex gap-1.5">
-        <button id="genImageBtn" onclick="generateSceneImage(${idx})" class="btn-primary rounded-lg px-4 py-3 text-sm font-bold flex items-center justify-center gap-2 flex-1">
-          <i data-lucide="image-plus" class="w-4 h-4"></i> ${scene.imageData ? 'Regenerate' : 'Generate Image'}
+        <button id="genImageBtn" onclick="generateSceneImage(${idx})" title="Generates the image for this scene only" class="btn-primary rounded-lg px-4 py-3 text-sm font-bold flex items-center justify-center gap-2 flex-1">
+          <i data-lucide="image-plus" class="w-4 h-4"></i> ${scene.imageData ? 'Regenerate' : 'Generate This Scene'}
         </button>
         ${scene.imageData ? `<button onclick="regenerateImage(${idx})" class="btn-secondary rounded-lg px-3 py-3 text-sm flex items-center justify-center" title="Regenerate image (will ask for confirmation)"><i data-lucide="refresh-cw" class="w-4 h-4" style="display:inline-block"></i></button>` : ''}
       </div>
@@ -12752,11 +12911,38 @@ function renderSceneImageColumn(idx){
   `;
 }
 
+/* ====================== IMAGE GENERATION SPINNER ====================== */
+const imageGenBusy = new Set();
+function imgGenOverlayHtml(label){
+  return `<div class="img-gen-overlay"><div class="img-gen-spinner"></div><div class="img-gen-label">${label||'Generating image…'}</div></div>`;
+}
+function showImgGenOverlay(el, label){
+  if(!el || el.querySelector(':scope > .img-gen-overlay')) return;
+  if(getComputedStyle(el).position==='static') el.style.position='relative';
+  el.insertAdjacentHTML('beforeend', imgGenOverlayHtml(label));
+}
+function hideImgGenOverlay(el){
+  if(el) el.querySelectorAll(':scope > .img-gen-overlay').forEach(n=>n.remove());
+}
+function setSceneImageBusy(idx, on){
+  if(on) imageGenBusy.add(idx); else imageGenBusy.delete(idx);
+  const wrap = document.getElementById('bubbleCanvasWrap-'+idx);
+  if(on) showImgGenOverlay(wrap); else hideImgGenOverlay(wrap);
+  const card = document.querySelector(`#sceneList .scene-card[data-index="${idx}"]`);
+  if(card) card.classList.toggle('img-generating', on);
+}
+
 function renderBubbleCanvasWrap(idx, scene, suffix=''){
+  const html = renderBubbleCanvasWrapBase(idx, scene, suffix);
+  return (suffix==='' && imageGenBusy.has(idx)) ? html + imgGenOverlayHtml() : html;
+}
+function renderBubbleCanvasWrapBase(idx, scene, suffix=''){
   ensureElements(scene);
   if(!scene.imageData){
-    return `<div class="w-full rounded-lg border border-default flex items-center justify-center" style="aspect-ratio:2/3; background:var(--bg-card);">
-      <p class="text-sm text-muted px-4 text-center">No image yet. Generate or upload one below.</p>
+    return `<div class="w-full rounded-lg flex flex-col items-center justify-center gap-2" style="aspect-ratio:2/3; max-height:70vh; background:var(--bg-card); border:2px dashed var(--border-strong);">
+      <i data-lucide="image-plus" class="w-10 h-10" style="color:var(--text-muted)"></i>
+      <p class="text-sm font-semibold">No image yet</p>
+      <p class="text-xs text-muted px-6 text-center">Press <b>Generate This Scene</b> below, or upload your own.</p>
     </div>`;
   }
   const elements = [
@@ -12871,15 +13057,13 @@ const IMAGE_SIZE_TO_ASPECT = {
 function setSceneImageSize(val, btn){
   appState.settings.imageSize = val;
   markModified();
-  document.querySelectorAll('[onclick^="setSceneImageSize"]').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  syncImageOptionsUI();
 }
 
 function setSceneImageQuality(val, btn){
   appState.settings.imageQuality = val;
   markModified();
-  document.querySelectorAll('[onclick^="setSceneImageQuality"]').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  syncImageOptionsUI();
 }
 
 async function generateSceneImage(idx){
@@ -12905,6 +13089,7 @@ async function generateSceneImage(idx){
   clearUndoStack(idx);
   const btn = document.getElementById('genImageBtn');
   setBtnLoading(btn, true, 'Generating...');
+  setSceneImageBusy(idx, true);
   try{
     const imageData = await retryWithBackoff(() => callImageAPI(scene, buildImagePromptForScene(scene, idx)));
     if(imageData){
@@ -12919,6 +13104,7 @@ async function generateSceneImage(idx){
       showToast('Image generation failed after 3 attempts.', 'error');
     }
   }finally{
+    setSceneImageBusy(idx, false);
     setBtnLoading(btn, false);
   }
 }
@@ -13512,7 +13698,7 @@ async function callImageAPI(scene, promptOverride) {
   }
   const prompt = promptOverride || buildImagePromptForScene(scene);
 
-  if (tool.id === 'gpt-image-2') {
+  if (tool.provider === 'openai') {
     try {
       const res = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
@@ -13549,7 +13735,9 @@ async function callImageAPI(scene, promptOverride) {
     }
   }
 
-  if (tool.id === 'nanobanana-pro' || tool.id === 'nanobanana-2') {
+  if (tool.provider === 'kie') return await generateImageViaKie(tool, key, prompt);
+
+  if (tool.provider === 'gemini') {
     const aspectMap = {
       '1024x1024': '1:1',
       '1024x1536': '2:3',
@@ -13643,10 +13831,11 @@ async function generateCoverImage() {
   appState.coverPrompt = prompt;
   const fakescene = { image_prompt: prompt, image_prompt_negative: 'blurry, low quality, extra limbs, deformed, misspelled text, garbled text', sceneType:'climax' };
   const savedSize=appState.settings.imageSize; appState.settings.imageSize = appState.coverFormat==='3:2' ? '1536x1024' : '1024x1536';
+  const _cvEl=document.getElementById('coverDesignerPreview'); showImgGenOverlay(_cvEl,'Generating cover…');
   try {
     const imageData=await retryWithBackoff(() => callImageAPI(fakescene, prompt));
     if(imageData){appState.coverImageData=imageData;document.getElementById('coverImgActions')?.classList.remove('hidden');renderCoverPreview();markModified();showToast('Cover generated!','success');}
-  } finally{appState.settings.imageSize=savedSize;setBtnLoading(btn,false);}
+  } finally{hideImgGenOverlay(_cvEl);appState.settings.imageSize=savedSize;setBtnLoading(btn,false);}
 }
 
 function handleCoverImgUpload(event){const file=event.target?.files?.[0];if(!file)return;const r=new FileReader();r.onload=e=>{appState.coverImageData=e.target.result;document.getElementById('coverImgActions')?.classList.remove('hidden');renderCoverPreview();showToast('Cover image uploaded.','success');};r.readAsDataURL(file);}
@@ -13679,10 +13868,13 @@ async function generateBackCoverImage(){
     +'Full-bleed background composition, publishable quality.';
   const fakescene={image_prompt:prompt,image_prompt_negative:'text, watermark, words, letters, people, faces, characters',sceneType:'atmospheric'};
   const savedSize=appState.settings.imageSize; appState.settings.imageSize='1024x1536';
+  const _bcP=document.getElementById('backCoverPreview'), _bcW=document.getElementById('backCoverPreviewWrap');
+  const _bcWasHidden=!!(_bcP&&_bcP.classList.contains('hidden'));
+  if(_bcP&&_bcW){ _bcP.classList.remove('hidden'); _bcW.style.minHeight='260px'; showImgGenOverlay(_bcW,'Generating back cover…'); }
   try{
     const imageData=await retryWithBackoff(() => callImageAPI(fakescene, prompt));
     if(imageData){appState.backCoverImageData=imageData;const p=document.getElementById('backCoverPreview');const i=document.getElementById('backCoverImageEl');if(p&&i){i.src=imageData;p.classList.remove('hidden');}window._bcDragInited=false;refreshBackCoverOverlay();markModified();showToast('Back cover image generated!','success');}
-  }finally{appState.settings.imageSize=savedSize;setBtnLoading(btn,false);}
+  }finally{hideImgGenOverlay(_bcW);if(_bcW)_bcW.style.minHeight='';if(_bcP&&_bcWasHidden&&!appState.backCoverImageData)_bcP.classList.add('hidden');appState.settings.imageSize=savedSize;setBtnLoading(btn,false);}
 }
 
 function handleBackCoverUpload(event){const file=event.target?.files?.[0];if(!file)return;const r=new FileReader();r.onload=e=>{appState.backCoverImageData=e.target.result;const p=document.getElementById('backCoverPreview');const i=document.getElementById('backCoverImageEl');if(p&&i){i.src=e.target.result;p.classList.remove('hidden');}window._bcDragInited=false;refreshBackCoverOverlay();markModified();showToast('Back cover uploaded.','success');};r.readAsDataURL(file);}
@@ -18315,6 +18507,7 @@ async function init(){
   loadCharacterPackLibrary();
   await restoreCurrentStory();
   document.getElementById('textModel').value = appState.settings.textModel;
+  syncTextSpeedUI();
   const autoCb = document.getElementById('autoSaveToggle');
   if(autoCb) autoCb.checked = appState.settings.autoSaveEnabled;
   renderSetupTab();
@@ -18333,12 +18526,13 @@ async function init(){
   renderAutoSaveRestore();
   masterRestoreUnlockHintOnLoad();
 }
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   restoreTheme();
-  checkLockStatus();
-  if (localStorage.getItem(LOCK_STORAGE_KEY) === 'true') {
-    init();
-  }
+  // Access is decided by the server: signed in + active license for this edition.
+  if(!(await EmakiAuth.guard('master'))) return;
+  document.getElementById('appRoot').style.display = 'block';
+  init();
+  EmakiAuth.mountAccount();
 });
 </script>
 </div>

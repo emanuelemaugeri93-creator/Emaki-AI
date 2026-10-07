@@ -870,7 +870,7 @@
       <p class="hero-copy">
         Your Studio Edition access is ready. You now have more freedom to shape,
         design, and publish your own illustrated graphic novels.
-        <strong>Save your unlock code before leaving this page.</strong>
+        <strong>Sign in with the email you used to purchase.</strong>
       </p>
     </section>
 
@@ -879,28 +879,15 @@
       <article class="access-card access-card--code">
         <div class="section-label">
           <span class="section-number">1</span>
-          <span>Your Personal Access Code</span>
+          <span>Your Access</span>
         </div>
 
-        <h2>Copy and save your unlock code</h2>
+        <h2>Sign in with your purchase email</h2>
 
         <p>
-          When Emaki AI opens, paste this code into the access screen and select
-          <strong>Unlock Studio Edition</strong>.
+          There is no code to copy. Use the <strong>same email address you used at checkout</strong>.
+          We send you a one-time login link, and your edition unlocks automatically.
         </p>
-
-        <div class="code-box">
-          <span id="accessCode" class="code">NOVELFLOWAI-STU20-R7KX-VELN</span>
-
-          <button
-            id="copyButton"
-            class="copy-button"
-            type="button"
-            onclick="copyAccessCode()"
-          >
-            Copy Code
-          </button>
-        </div>
       </article>
 
       <article class="access-card access-card--launch">
@@ -912,22 +899,19 @@
         <h2>Launch Emaki AI Studio Edition</h2>
 
         <p>
-          Click the button below to open your Graphic Novel Studio. Enter your
-          access code once, and your browser will remember your unlocked session.
+          Click the button below, enter the email you used to purchase, and open the login link we send you. Your browser will remember you afterwards.
         </p>
 
         <a
           class="primary-button"
-          href="https://emanuelemaugeri93-creator.github.io/Emaki-AI/emaki-ai-studio-edition.html"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="https://emanuelemaugeri93-creator.github.io/Emaki-AI/index.html?next=studio"
         >
           <span aria-hidden="true">✦</span>
-          <span>Open Emaki AI Studio Edition</span>
+          <span>Sign in to Emaki AI Studio Edition</span>
         </a>
 
         <p class="note">
-          The software opens in a new tab, so this page remains available while you unlock it.
+          Tip: no email yet? Check your spam folder, or wait a minute and try again.
         </p>
       </article>
 
@@ -944,14 +928,14 @@
       <div class="step-grid">
         <article class="step">
           <div class="step-number">01</div>
-          <h3>Unlock Your Edition</h3>
-          <p>Open the app and enter the personal Studio Edition code shown above.</p>
+          <h3>Sign In</h3>
+          <p>Enter your purchase email and click the login link we send you.</p>
         </article>
 
         <article class="step">
           <div class="step-number">02</div>
           <h3>Add Your AI Key</h3>
-          <p>Open the API Keys panel and connect your Anthropic, OpenAI, or Gemini key.</p>
+          <p>Open the API Keys panel and connect your Anthropic, OpenAI, Gemini, or Kie.ai key.</p>
         </article>
 
         <article class="step">
@@ -1033,9 +1017,7 @@
       <div class="important-icon" aria-hidden="true">⚠</div>
 
       <div>
-        <strong>Important:</strong> save your access code somewhere safe. You will
-        need it to unlock your purchased Studio Edition. You will also need your own
-        API key from Anthropic, OpenAI, or Google Gemini to generate text and images
+        <strong>Important:</strong> sign in with the same email you used to purchase your Studio Edition. You will also need your own API key from Anthropic, OpenAI, Google Gemini, or Kie.ai to generate text and images
         inside the software.
       </div>
     </aside>
@@ -1046,29 +1028,5 @@
     </footer>
 
   </main>
-
-  <script>
-    function copyAccessCode() {
-      const code = document.getElementById("accessCode").textContent.trim();
-      const button = document.getElementById("copyButton");
-      const originalText = button.textContent;
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code)
-          .then(() => {
-            button.textContent = "✓ Copied!";
-
-            setTimeout(() => {
-              button.textContent = originalText;
-            }, 2200);
-          })
-          .catch(() => {
-            window.prompt("Copy your access code:", code);
-          });
-      } else {
-        window.prompt("Copy your access code:", code);
-      }
-    }
-  </script>
 </body>
 </html>

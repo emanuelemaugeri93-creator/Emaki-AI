@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emaki AI — Sign in</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{
+    --bg:#100c0a; --card:#1a1411; --card2:#211a16; --border:rgba(255,220,160,.12); --border-strong:rgba(255,220,160,.22);
+    --text:#fff4e7; --text2:#d2b9a0; --muted:#927766; --gold:#d4a63a; --gold-light:#f0c879; --ok:#34d399; --err:#f87171;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; background:var(--bg); color:var(--text); font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  body{ display:flex; align-items:center; justify-content:center; padding:24px;
+    background:radial-gradient(900px 500px at 50% -10%, rgba(212,166,58,.12), transparent 60%), var(--bg); }
+  .wrap{ width:100%; max-width:440px; }
+  .brand{ text-align:center; margin-bottom:22px; }
+  .brand h1{ margin:0; font-size:28px; font-weight:800; letter-spacing:-.5px; color:var(--gold); }
+  .brand p{ margin:4px 0 0; color:var(--muted); font-size:13px; }
+  .card{ background:var(--card); border:1px solid var(--border); border-radius:18px; padding:26px; box-shadow:0 12px 40px rgba(0,0,0,.45); }
+  h2{ margin:0 0 6px; font-size:18px; }
+  .sub{ margin:0 0 18px; color:var(--text2); font-size:13.5px; }
+  label{ display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  input[type=email]{ width:100%; height:46px; padding:0 14px; border-radius:12px; border:1px solid var(--border-strong);
+    background:#140f0c; color:var(--text); font-size:15px; outline:none; transition:.15s; }
+  input[type=email]:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,166,58,.18); }
+  button.primary{ width:100%; height:46px; margin-top:14px; border:0; border-radius:12px; cursor:pointer; font-weight:700; font-size:15px;
+    color:#140f0c; background:linear-gradient(135deg,#e2b94a,#b98a22); transition:.15s; }
+  button.primary:hover:not(:disabled){ filter:brightness(1.07); transform:translateY(-1px); }
+  button.primary:disabled{ opacity:.6; cursor:default; }
+  .msg{ margin-top:14px; font-size:13px; border-radius:10px; padding:10px 12px; display:none; }
+  .msg.err{ display:block; background:rgba(248,113,113,.1); color:var(--err); border:1px solid rgba(248,113,113,.25); }
+  .msg.ok{ display:block; background:rgba(52,211,153,.1); color:var(--ok); border:1px solid rgba(52,211,153,.25); }
+  .msg.info{ display:block; background:rgba(212,166,58,.1); color:var(--gold-light); border:1px solid rgba(212,166,58,.28); }
+  .hint{ margin-top:16px; font-size:12px; color:var(--muted); text-align:center; }
+  .who{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; font-size:13px; color:var(--text2); }
+  .who span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .linkbtn{ background:none; border:0; color:var(--muted); text-decoration:underline; cursor:pointer; font-size:12px; padding:2px; }
+  .linkbtn:hover{ color:var(--err); }
+  .eds{ display:flex; flex-direction:column; gap:10px; }
+  .ed{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-radius:14px;
+    border:1px solid var(--border); background:var(--card2); text-decoration:none; color:var(--text); transition:.15s; }
+  .ed b{ display:block; font-size:15px; }
+  .ed small{ color:var(--muted); font-size:12px; }
+  .ed .go{ font-weight:700; color:var(--gold-light); white-space:nowrap; }
+  a.ed:hover{ border-color:var(--gold); background:rgba(212,166,58,.08); transform:translateY(-1px); }
+  .ed.locked{ opacity:.45; }
+  .ed.locked .go{ color:var(--muted); font-weight:500; }
+  .spin{ display:inline-block; width:16px; height:16px; border:2px solid rgba(20,15,12,.25); border-top-color:#140f0c; border-radius:50%; animation:s .7s linear infinite; vertical-align:-3px; margin-right:8px; }
+  .center{ text-align:center; color:var(--muted); padding:30px 0; }
+  .center .spin{ border-color:rgba(212,166,58,.25); border-top-color:var(--gold); width:26px; height:26px; margin:0 0 10px; }
+  @keyframes s{ to{ transform:rotate(360deg); } }
+  [hidden]{ display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><h1>Emaki AI</h1><p>Graphic novel studio</p></div>
+  <div class="card">
+
+    <div id="viewLoading" class="center"><div class="spin"></div><div>Loading…</div></div>
+
+    <!-- Signed out -->
+    <form id="viewLogin" hidden novalidate>
+      <h2>Sign in</h2>
+      <p class="sub">Enter the <b>email you used to buy</b>. We'll send you a one-time link, no password needed.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+      <button id="sendBtn" class="primary" type="submit">Send me a login link</button>
+      <div id="loginMsg" class="msg"></div>
+      <div class="hint">Open the link on any device. It expires after a short time.</div>
+    </form>
+
+    <!-- Link sent -->
+    <div id="viewSent" hidden>
+      <h2>Check your inbox</h2>
+      <p class="sub">We sent a login link to <b id="sentTo"></b>. Click it to continue.<br>Nothing there? Check your spam folder.</p>
+      <button id="againBtn" class="primary" type="button" style="background:var(--card2);color:var(--text);border:1px solid var(--border-strong)">Use a different email</button>
+    </div>
+
+    <!-- Signed in -->
+    <div id="viewApps" hidden>
+      <div class="who"><span id="whoEmail"></span><button id="outBtn" class="linkbtn" type="button">Sign out</button></div>
+      <div id="appsMsg" class="msg"></div>
+      <div id="eds" class="eds"></div>
+      <div id="noLicense" class="hint" hidden>
+        No active license found for this email. Make sure you sign in with the <b>same email you purchased with</b>.
+        If you just bought, wait a minute and reload.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="emaki-core.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var params = new URLSearchParams(location.search);
+  var need = params.get('need');
+
+  function show(which){
+    ['viewLoading','viewLogin','viewSent','viewApps'].forEach(function(v){ $(v).hidden = (v !== which); });
+  }
+  function msg(el, kind, text){ el.className = 'msg ' + kind; el.textContent = text; }
+
+  async function render(){
+    try{
+      var session = await EmakiAuth.getSession();
+      if(!session){ show('viewLogin'); return; }
+      $('whoEmail').textContent = session.user.email || '';
+      var owned = await EmakiAuth.myEditions();
+      var list = $('eds'); list.innerHTML = '';
+      Object.keys(EmakiAuth.EDITIONS).forEach(function(id){
+        var ed = EmakiAuth.EDITIONS[id], has = owned.indexOf(id) !== -1;
+        var el = document.createElement(has ? 'a' : 'div');
+        el.className = 'ed' + (has ? '' : ' locked');
+        if(has) el.href = ed.file;
+        var left = document.createElement('div');
+        var b = document.createElement('b'); b.textContent = ed.label;
+        var s = document.createElement('small'); s.textContent = has ? 'Included in your license' : 'Not purchased';
+        left.appendChild(b); left.appendChild(s);
+        var go = document.createElement('span'); go.className = 'go'; go.textContent = has ? 'Open →' : 'Locked';
+        el.appendChild(left); el.appendChild(go);
+        list.appendChild(el);
+      });
+      $('noLicense').hidden = owned.length > 0;
+      if(need && EmakiAuth.EDITIONS[need] && owned.indexOf(need) === -1){
+        msg($('appsMsg'), 'info', 'This account does not have a license for ' + EmakiAuth.EDITIONS[need].label + '.');
+      } else {
+        $('appsMsg').className = 'msg';
+      }
+      // Single edition and arrived from an app link: go straight in.
+      var next = params.get('next');
+      if(next && owned.indexOf(next) !== -1 && EmakiAuth.EDITIONS[next]){
+        location.replace(EmakiAuth.EDITIONS[next].file); return;
+      }
+      show('viewApps');
+    }catch(e){
+      console.error(e);
+      show('viewLogin');
+      msg($('loginMsg'), 'err', 'Could not reach the server. Check your connection and reload.');
+    }
+  }
+
+  $('viewLogin').addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    var email = $('email').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg($('loginMsg'), 'err', 'Please enter a valid email address.'); return; }
+    var btn = $('sendBtn'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Sending…';
+    $('loginMsg').className = 'msg';
+    try{
+      await EmakiAuth.sendLoginLink(email);
+      $('sentTo').textContent = email;
+      show('viewSent');
+    }catch(e){
+      var text = (e && e.message) || 'Something went wrong.';
+      if(/rate limit|too many|security purposes/i.test(text)) text = 'Too many attempts. Please wait a minute and try again.';
+      msg($('loginMsg'), 'err', text);
+    }finally{
+      btn.disabled = false; btn.textContent = 'Send me a login link';
+    }
+  });
+  $('againBtn').addEventListener('click', function(){ show('viewLogin'); $('email').focus(); });
+  $('outBtn').addEventListener('click', function(){ EmakiAuth.signOut(); });
+
+  // Magic link lands here with the session in the URL; supabase-js picks it up on load.
+  render().then(function(){
+    if(location.hash.indexOf('access_token') !== -1 || location.search.indexOf('code=') !== -1){
+      history.replaceState(null, '', location.pathname + (need ? '?need=' + encodeURIComponent(need) : ''));
+    }
+  });
+})();
+</script>
+</body>
+</html>
